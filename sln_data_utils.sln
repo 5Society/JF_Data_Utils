@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API_JF_Data_Utils_Example", "API_JF_Data_Utils_Example\API_JF_Data_Utils_Example.csproj", "{63B3EB5E-F64B-44DC-8BE7-D74BB7B48820}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JF_Data_Utils", "JF_Data_Utils\JF_Data_Utils.csproj", "{AD371742-A861-44EE-A78D-5F57FF1B6DF8}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63B3EB5E-F64B-44DC-8BE7-D74BB7B48820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B3EB5E-F64B-44DC-8BE7-D74BB7B48820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B3EB5E-F64B-44DC-8BE7-D74BB7B48820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B3EB5E-F64B-44DC-8BE7-D74BB7B48820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD371742-A861-44EE-A78D-5F57FF1B6DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD371742-A861-44EE-A78D-5F57FF1B6DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD371742-A861-44EE-A78D-5F57FF1B6DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD371742-A861-44EE-A78D-5F57FF1B6DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
