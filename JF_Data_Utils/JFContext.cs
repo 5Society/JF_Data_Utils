@@ -22,7 +22,7 @@ namespace JF.Utils.Data
             _username = username;
         }
 
-        public JFContext(DbContextOptions options) : base(options)
+        public JFContext(DbContextOptions<JFContext> options) : base(options)
         {
             _username = "Generic";
         }
@@ -49,8 +49,8 @@ namespace JF.Utils.Data
 
         private void UpdateSoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries())
-                if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
+            foreach (var entry in ChangeTracker.Entries().Where(e=>e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
+                //if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
                     switch (entry.State)
                     {
                         case EntityState.Added:
