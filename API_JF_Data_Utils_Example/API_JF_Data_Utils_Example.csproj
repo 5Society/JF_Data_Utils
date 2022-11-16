@@ -16,6 +16,7 @@
   <ItemGroup>
     <Folder Include="Core\Helper\" />
     <Folder Include="Core\Mapper\" />
+    <Folder Include="DataAccess\Entities\" />
     <Folder Include="DataAccess\Interfaces\" />
     <Folder Include="DataAccess\Repositories\" />
   </ItemGroup>
