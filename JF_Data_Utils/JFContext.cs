@@ -27,10 +27,10 @@ namespace JF.Utils.Data
             _username = "Generic";
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
-            base.OnModelCreating(builder);
+            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
+            base.OnModelCreating(modelBuilder);
         }
 
         private static void SetQueryFilter<TEntity>(ModelBuilder builder) where TEntity : class
