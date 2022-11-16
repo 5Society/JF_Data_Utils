@@ -9,8 +9,5 @@ namespace API_JF_Data_Utils_Example.DataAccess
         {
         }
 
-        public ApplicationContext(DbContextOptions<JFContext> options, string username) : base(options, username)
-        {
-        }
     }
 }

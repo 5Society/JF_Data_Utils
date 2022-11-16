@@ -15,27 +15,22 @@ namespace JF.Utils.Data
         private readonly string? _username;
 
         private IDbContextTransaction? _currentTransaction;
-        public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction!;
+        public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
         public JFContext(DbContextOptions<JFContext> options, string username) : base(options)
         {
             _username = username;
         }
 
-        public JFContext(DbContextOptions options) : base(options)
+        public JFContext(DbContextOptions<JFContext> options) : base(options)
         {
             _username = "Generic";
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
-            base.OnModelCreating(builder);
-        }
-
-        private static void SetQueryFilter<TEntity>(ModelBuilder builder) where TEntity : class
-        {
-            builder.Entity<TEntity>().HasQueryFilter(m => !EF.Property<bool>(m, "IsDeleted"));
+            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
+            base.OnModelCreating(modelBuilder);
         }
 
         public override int SaveChanges()
@@ -54,8 +49,8 @@ namespace JF.Utils.Data
 
         private void UpdateSoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries())
-                if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
+            foreach (var entry in ChangeTracker.Entries().Where(e=>e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
+                //if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
                     switch (entry.State)
                     {
                         case EntityState.Added:
