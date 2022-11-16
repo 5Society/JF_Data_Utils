@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JF.Utils.Data.Interfaces
 {
-    internal interface IEntityAuditable
+    public interface IEntityAuditable
     {
         /* auditable fields */
         public DateTime CreatedDate { get; set; } 
