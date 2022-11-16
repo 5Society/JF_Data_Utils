@@ -9,7 +9,7 @@ namespace JF.Utils.Data.Interfaces
 {
     internal interface IUnitOfWork : IDisposable
     {
-        public IDbContextTransaction GetCurrentTransaction();
+        public IDbContextTransaction? GetCurrentTransaction();
         bool HasActiveTransaction { get; }
         void DetectChanges(); 
         IDbContextTransaction BeginTransaction();

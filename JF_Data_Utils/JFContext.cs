@@ -15,7 +15,7 @@ namespace JF.Utils.Data
         private readonly string? _username;
 
         private IDbContextTransaction? _currentTransaction;
-        public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction!;
+        public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
         public JFContext(DbContextOptions<JFContext> options, string username) : base(options)
         {
