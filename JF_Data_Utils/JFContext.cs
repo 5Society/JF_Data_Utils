@@ -33,11 +33,6 @@ namespace JF.Utils.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        private static void SetQueryFilter<TEntity>(ModelBuilder builder) where TEntity : class
-        {
-            builder.Entity<TEntity>().HasQueryFilter(m => !EF.Property<bool>(m, "IsDeleted"));
-        }
-
         public override int SaveChanges()
         {
             UpdateSoftDelete();
