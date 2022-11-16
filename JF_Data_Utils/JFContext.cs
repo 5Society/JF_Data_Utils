@@ -2,11 +2,6 @@
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JF.Utils.Data
 {
@@ -15,47 +10,50 @@ namespace JF.Utils.Data
         private readonly string? _username;
 
         private IDbContextTransaction? _currentTransaction;
-        public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction!;
+        public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
         public JFContext(DbContextOptions<JFContext> options, string username) : base(options)
         {
             _username = username;
         }
 
-        public JFContext(DbContextOptions options) : base(options)
+        public JFContext(DbContextOptions<JFContext> options) : base(options)
         {
             _username = "Generic";
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
-            base.OnModelCreating(builder);
+            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
+            base.OnModelCreating(modelBuilder);
         }
 
-        private static void SetQueryFilter<TEntity>(ModelBuilder builder) where TEntity : class
-        {
-            builder.Entity<TEntity>().HasQueryFilter(m => !EF.Property<bool>(m, "IsDeleted"));
-        }
-
-        public override int SaveChanges()
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             UpdateSoftDelete();
             UpdateAuditable();
-            return base.SaveChanges();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
+        public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
 
-        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             UpdateSoftDelete();
+            UpdateAuditable();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            UpdateSoftDelete(); 
             UpdateAuditable();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         private void UpdateSoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries())
-                if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
+            foreach (var entry in ChangeTracker.Entries().Where(e=>e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
+                //if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
                     switch (entry.State)
                     {
                         case EntityState.Added:
