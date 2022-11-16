@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JF.Utils.Data.Interfaces
 {
-    internal interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         public IDbContextTransaction? GetCurrentTransaction();
         bool HasActiveTransaction { get; }

@@ -2,6 +2,7 @@
 using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Services;
 using API_JF_Data_Utils_Example.DataAccess;
+using JF.Utils.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Add dbContext
-builder.Services.AddDbContext<ApplicationContext>(options => { options.UseInMemoryDatabase("Test"); });
+builder.Services.AddDbContext<JFContext>(options => { options.UseInMemoryDatabase("Test"); });
 // Add Services
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ApplicationContext>();
 
 var app = builder.Build();
 
