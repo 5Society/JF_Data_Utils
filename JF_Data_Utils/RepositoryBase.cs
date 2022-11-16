@@ -28,7 +28,7 @@ namespace JF.Utils.Data
 
         public virtual async Task<int> AddRangeAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            await _entities.AddRangeAsync(entities);
+            await _entities.AddRangeAsync(entities, cancellationToken);
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
