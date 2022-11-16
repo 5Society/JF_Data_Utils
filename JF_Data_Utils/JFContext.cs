@@ -2,11 +2,6 @@
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JF.Utils.Data
 {
@@ -33,16 +28,24 @@ namespace JF.Utils.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public override int SaveChanges()
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             UpdateSoftDelete();
             UpdateAuditable();
-            return base.SaveChanges();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
+        public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
 
-        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             UpdateSoftDelete();
+            UpdateAuditable();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            UpdateSoftDelete(); 
             UpdateAuditable();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }

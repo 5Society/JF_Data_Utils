@@ -11,7 +11,7 @@ namespace JF.Utils.Data
 {
     public class ReadRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
     {
-        private readonly DbSet<TEntity> _entities;
+        protected readonly DbSet<TEntity> _entities;
         protected readonly JFContext _context;
         public IUnitOfWork UnitOfWork { get { return _context; } }
         
