@@ -1,5 +1,9 @@
+using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
+using API_JF_Data_Utils_Example.Core.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_JF_Data_Utils_Example.Core.Controllers
 {
@@ -7,11 +11,83 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
     [Route("[controller]")]
     public class StudentController : ControllerBase
     {
+        private readonly IStudentService _studentService;
 
-        [HttpGet(Name = "GetList")]
-        public IActionResult Get()
+        public StudentController(IStudentService studentService)
         {
-            return BadRequest("Not implemented");
+            _studentService = studentService;
+        }
+
+        [HttpGet()]
+        public ActionResult<Student> Get()
+        {
+            var results = _studentService.GetAll();
+            Student s = new Student();
+            return Ok(results);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var entity = await _studentService.GetByIdAsync(id);
+
+            if (entity is null)
+                return NotFound($"Entity with Id = {id} not found.");
+
+            return Ok(entity);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Student>> Post([FromBody] Student entity)
+        {
+            if (entity is null)
+                return BadRequest(ModelState);
+
+            _studentService.Add(entity);
+
+            var result = await _studentService.UnitOfWork.SaveChangesAsync();
+            if (result <= 0)
+                return BadRequest("Your changes have no[t been saved.");
+
+            return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] Student entity)
+        {
+            if (entity is null)
+                return BadRequest(ModelState);
+
+            if (id != entity.Id)
+                return BadRequest("Identifier is not valid or Identifiers don't match.");
+
+            _studentService.Update(entity);
+
+            var result = await _studentService.UnitOfWork.SaveChangesAsync();
+            if (result <= 0)
+                return BadRequest("Your changes have not been saved.");
+
+            return NoContent();
+        }
+
+      
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var entity = await _studentService.GetByIdAsync(id);
+
+            if (entity is null)
+                return NotFound($"Entity with Id = {id} not found");
+
+            _studentService.Delete(entity);
+
+            var result = await _studentService.UnitOfWork.SaveChangesAsync();
+            if (result <= 0)
+                return BadRequest();
+
+            return NoContent();
         }
     }
 }

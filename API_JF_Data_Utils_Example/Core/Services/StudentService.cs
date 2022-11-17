@@ -1,14 +1,14 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
+using API_JF_Data_Utils_Example.Core.Models;
 using API_JF_Data_Utils_Example.DataAccess;
+using JF.Utils.Data;
+using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
-    public class StudentService : IStudentService
+    public class StudentService : RepositoryBase<Student>, IStudentService
     {
-        private readonly ApplicationContext _context;
-        public StudentService(ApplicationContext context)
-        {
-            _context = context;
-        }
+        public StudentService(IUnitOfWork context): base(context)
+        {}
     }
 }
