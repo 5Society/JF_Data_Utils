@@ -8,7 +8,7 @@ namespace JF.Utils.Data.Interfaces
 {
     public interface IRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
     {
-        //IUoW UnitOfWork { get; }
+        IUnitOfWork UnitOfWork { get; }
 
         TEntity Add(TEntity entity);
 

@@ -12,6 +12,6 @@ namespace JF.Utils.Data.Interfaces
 
         public string? DeletedBy { get; set; }
 
-        public bool IsDeleted { get => DeletedBy != null; }
+        public bool IsDeleted { get; }
     }
 }

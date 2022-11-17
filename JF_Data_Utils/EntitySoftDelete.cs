@@ -17,5 +17,7 @@ namespace JF.Utils.Data
         [Column("DeletedBy", TypeName = "varchar")]
         [MaxLength(100)]
         public string? DeletedBy { get; set; }
+        [NotMapped]
+        public bool IsDeleted => DeletedDate != null;
     }
 }

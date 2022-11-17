@@ -16,9 +16,9 @@ namespace JF.Utils.Data
         public IUnitOfWork UnitOfWork { get { return _context; } }
         
 
-        public ReadRepositoryBase(JFContext context)
+        public ReadRepositoryBase(IUnitOfWork context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = (JFContext)(context ?? throw new ArgumentNullException(nameof(context)));
             _entities = _context.Set<TEntity>();
         }
         
