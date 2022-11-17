@@ -22,7 +22,6 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         public ActionResult<Student> Get()
         {
             var results = _studentService.GetAll();
-            Student s = new Student();
             return Ok(results);
         }
 
@@ -71,8 +70,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             return NoContent();
         }
 
-      
-
+       
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
