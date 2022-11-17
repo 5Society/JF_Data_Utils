@@ -24,7 +24,7 @@ namespace JF.Utils.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
+            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => e.DeletedDate==null);
             base.OnModelCreating(modelBuilder);
         }
 
@@ -37,12 +37,9 @@ namespace JF.Utils.Data
         public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
 
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            UpdateSoftDelete();
-            UpdateAuditable();
-            return await base.SaveChangesAsync(cancellationToken);
-        }
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
+            => await SaveChangesAsync(acceptAllChangesOnSuccess:true, cancellationToken);
+        
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             UpdateSoftDelete(); 
@@ -52,39 +49,37 @@ namespace JF.Utils.Data
 
         private void UpdateSoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries().Where(e=>e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
-                //if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
-                    switch (entry.State)
-                    {
-                        case EntityState.Added:
-                            entry.CurrentValues["DeletedDate"] = false;
-                            entry.CurrentValues["DeletedBy"] = false;
-                            break;
-                        case EntityState.Deleted:
-                            entry.State = EntityState.Modified;
-                            entry.CurrentValues["DeletedDate"] = DateTime.Now;
-                            entry.CurrentValues["DeletedBy"] = _username;
-                            break;
-                    }
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["DeletedDate"] = null;
+                        entry.CurrentValues["DeletedBy"] = null;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["DeletedDate"] = DateTime.Now;
+                        entry.CurrentValues["DeletedBy"] = _username;
+                        break;
+                }
         }
         private void UpdateAuditable()
         {
-            foreach (var entry in ChangeTracker.Entries())
-                if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable)))
-                    switch (entry.State)
-                    {
-                        case EntityState.Added:
-                            entry.CurrentValues["CreatedDate"] = DateTime.Now;
-                            entry.CurrentValues["CreatedBy"] = _username;
-                            entry.CurrentValues["LastModifiedDate"] = null;
-                            entry.CurrentValues["LastModifiedBy"] = null;
-                            break;
-                        case EntityState.Modified:
-                            entry.State = EntityState.Modified;
-                            entry.CurrentValues["LastModifiedDate"] = DateTime.Now;
-                            entry.CurrentValues["LastModifiedBy"] = _username;
-                            break;
-                    }
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable))))
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["CreatedDate"] = DateTime.Now;
+                        entry.CurrentValues["CreatedBy"] = _username;
+                        entry.CurrentValues["LastModifiedDate"] = null;
+                        entry.CurrentValues["LastModifiedBy"] = null;
+                        break;
+                    case EntityState.Modified:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["LastModifiedDate"] = DateTime.Now;
+                        entry.CurrentValues["LastModifiedBy"] = _username;
+                        break;
+                }
         }
 
         public IDbContextTransaction BeginTransaction()
