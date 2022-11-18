@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataAccess\Entities\**" />
     <Compile Remove="Core\Helper\**" />
     <Compile Remove="Core\Mapper\**" />
+    <Content Remove="DataAccess\Entities\**" />
     <Content Remove="Core\Helper\**" />
     <Content Remove="Core\Mapper\**" />
+    <EmbeddedResource Remove="DataAccess\Entities\**" />
     <EmbeddedResource Remove="Core\Helper\**" />
     <EmbeddedResource Remove="Core\Mapper\**" />
+    <None Remove="DataAccess\Entities\**" />
     <None Remove="Core\Helper\**" />
     <None Remove="Core\Mapper\**" />
   </ItemGroup>
@@ -26,8 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\DataAccess\Entities\" />
-    <Folder Include="Core\DataAccess\Repositories\" />
+    <Folder Include="DataAccess\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
