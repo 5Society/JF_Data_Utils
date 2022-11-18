@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Core\Helper\**" />
+    <Compile Remove="Core\Mapper\**" />
+    <Content Remove="Core\Helper\**" />
+    <Content Remove="Core\Mapper\**" />
+    <EmbeddedResource Remove="Core\Helper\**" />
+    <EmbeddedResource Remove="Core\Mapper\**" />
+    <None Remove="Core\Helper\**" />
+    <None Remove="Core\Mapper\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
@@ -15,10 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Helper\" />
-    <Folder Include="Core\Mapper\" />
-    <Folder Include="DataAccess\Entities\" />
-    <Folder Include="DataAccess\Repositories\" />
+    <Folder Include="Core\DataAccess\Entities\" />
+    <Folder Include="Core\DataAccess\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
