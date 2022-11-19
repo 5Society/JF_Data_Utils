@@ -5,7 +5,7 @@ using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
-    public class StudentService : RepositoryBase<Student>, IStudentService
+    public class StudentService : JFRepositoryBase<Student>, IStudentService
     {
         public StudentService(IUnitOfWork context): base(context)
         {}
