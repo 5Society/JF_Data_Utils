@@ -21,7 +21,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpGet()]
         public ActionResult<Student> Get()
         {
-            var results = _studentService.GetAll();
+            var results = _studentService.GetAllStudents();
             return Ok(results);
         }
 
@@ -29,7 +29,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var entity = await _studentService.GetByIdAsync(id);
+            var entity = await _studentService.GetStudentById(id);
 
             if (entity is null)
                 return NotFound($"Entity with Id = {id} not found.");
@@ -40,14 +40,14 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpPost]
         public async Task<ActionResult<Student>> Post([FromBody] Student entity)
         {
+
             if (entity is null)
                 return BadRequest(ModelState);
 
-            _studentService.Add(entity);
+            bool result = await _studentService.AddStudent(entity);
 
-            var result = await _studentService.UnitOfWork.SaveChangesAsync();
-            if (result <= 0)
-                return BadRequest("Your changes have no[t been saved.");
+            if (!result)
+                return BadRequest("Your changes have not been saved.");
 
             return CreatedAtAction(nameof(Get), new { id = entity.Id }, entity);
         }
@@ -61,10 +61,9 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             if (id != entity.Id)
                 return BadRequest("Identifier is not valid or Identifiers don't match.");
 
-            _studentService.Update(entity);
+            bool result = await _studentService.UpdateStudent(id, entity);
 
-            var result = await _studentService.UnitOfWork.SaveChangesAsync();
-            if (result <= 0)
+            if (!result)
                 return BadRequest("Your changes have not been saved.");
 
             return NoContent();
@@ -73,6 +72,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Student> patchDoc)
         {
+            /*
             if (patchDoc is null)
                 return BadRequest(ModelState);
 
@@ -94,23 +94,16 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             {
                 throw;
             }
-
+            */
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var entity = await _studentService.GetByIdAsync(id);
+            bool result = await _studentService.DeleteStudent(id);
 
-            if (entity is null)
-                return NotFound($"Entity with Id = {id} not found");
-
-            _studentService.Delete(entity);
-
-            var result = await _studentService.UnitOfWork.SaveChangesAsync();
-            if (result <= 0)
-                return BadRequest();
+            if (!result) return NotFound($"Entity with Id = {id} not found");
 
             return NoContent();
         }
