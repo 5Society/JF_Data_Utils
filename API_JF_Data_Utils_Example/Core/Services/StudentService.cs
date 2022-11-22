@@ -36,7 +36,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
             return _studentRepository.GetAll();
         }
 
-        public async Task<Student> GetStudentById(int id)
+        public async Task<Student?> GetStudentById(int id)
         {
             return await _studentRepository.GetByIdAsync(id);
         }
