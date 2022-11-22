@@ -69,35 +69,6 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Student> patchDoc)
-        {
-            /*
-            if (patchDoc is null)
-                return BadRequest(ModelState);
-
-            var existEntity = await _studentService.GetByIdAsync(id);
-            if (existEntity is null)
-                return NotFound($"Entity with Id = {id} not found");
-
-            patchDoc.ApplyTo(existEntity, (Microsoft.AspNetCore.JsonPatch.Adapters.IObjectAdapter)ModelState);
-
-            var isValid = TryValidateModel(existEntity);
-            if (!isValid)
-                return BadRequest(ModelState);
-
-            try
-            {
-                await _studentService.UnitOfWork.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            */
-            return NoContent();
-        }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
