@@ -72,7 +72,6 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Student> patchDoc)
         {
-            /*
             if (patchDoc is null)
                 return BadRequest(ModelState);
 
@@ -94,7 +93,6 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             {
                 throw;
             }
-            */
             return NoContent();
         }
 
