@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace JF.Utils.Data
 {
-    public class ReadRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
+    public class JFReadRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
     {
         protected readonly DbSet<TEntity> _entities;
         protected readonly JFContext _context;
         public IUnitOfWork UnitOfWork { get { return _context; } }
         
 
-        public ReadRepositoryBase(IUnitOfWork context)
+        public JFReadRepositoryBase(IUnitOfWork context)
         {
             _context = (JFContext)(context ?? throw new ArgumentNullException(nameof(context)));
             _entities = _context.Set<TEntity>();

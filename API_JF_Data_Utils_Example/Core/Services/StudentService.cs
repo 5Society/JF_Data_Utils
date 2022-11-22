@@ -1,14 +1,51 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using API_JF_Data_Utils_Example.DataAccess;
+using API_JF_Data_Utils_Example.DataAccess.Repositories;
 using JF.Utils.Data;
 using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
-    public class StudentService : RepositoryBase<Student>, IStudentService
+    public class StudentService : IStudentService
     {
-        public StudentService(IUnitOfWork context): base(context)
-        {}
+        private readonly StudentRepository _studentRepository;
+
+        public StudentService(StudentRepository studentRepository)
+        { 
+            _studentRepository = studentRepository;
+        }
+        public async Task<bool> AddStudent(Student student)
+        {
+            _studentRepository.Add(student);
+            return (await _studentRepository.UnitOfWork.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<bool> DeleteStudent(int id)
+        {
+            Student? entity = await _studentRepository.GetByIdAsync(id);
+
+            if (entity is null) return false;
+
+            _studentRepository.Delete(entity);
+
+            return await _studentRepository.UnitOfWork.SaveChangesAsync()>0;
+        }
+
+        public IEnumerable<Student> GetAllStudents()
+        {
+            return _studentRepository.GetAll();
+        }
+
+        public async Task<Student?> GetStudentById(int id)
+        {
+            return await _studentRepository.GetByIdAsync(id);
+        }
+
+        public async Task<bool> UpdateStudent(int id, Student student)
+        {
+            _studentRepository.Update(student);
+            return await _studentRepository.UnitOfWork.SaveChangesAsync() >0;
+
+        }
     }
 }
