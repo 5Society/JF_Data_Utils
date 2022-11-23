@@ -28,20 +28,24 @@ namespace TestProject.Services
         {
             Student student = new Student() { LastName = lastName, Name = name };
             var result = _service.AddStudent(student).Result;
-            Assert.That(result, Is.EqualTo(resultExpexted));
-            if (result)
+
+            Assert.Multiple(() =>
             {
-                //Valida que no esté borrado
-                Assert.That(student.IsDeleted, Is.False);
-                Assert.That(student.DeletedBy, Is.Null);
-                //Valida que no esté modificad  o
-                Assert.That(student.LastModifiedBy, Is.Null);
-                Assert.That(student.LastModifiedDate, Is.Null);
-                //Valida que tenga la información de creación
-                NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
-                Assert.That(student.CreatedBy, Is.Not.Null);
-                Assert.That(student.CreatedDate, @null);
-            }
+                Assert.That(result, Is.EqualTo(resultExpexted));
+                if (result)
+                {
+                    //Valida que no esté borrado
+                    Assert.That(student.IsDeleted, Is.False);
+                    Assert.That(student.DeletedBy, Is.Null);
+                    //Valida que no esté modificad  o
+                    Assert.That(student.LastModifiedBy, Is.Null);
+                    Assert.That(student.LastModifiedDate, Is.Null);
+                    //Valida que tenga la información de creación
+                    NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
+                    Assert.That(student.CreatedBy, Is.Not.Null);
+                    Assert.That(student.CreatedDate, @null);
+                }
+            });
         }
 
         [TestCase("", "name")]
@@ -84,20 +88,23 @@ namespace TestProject.Services
         {
             Student student = new Student() { Id = studentId, LastName = lastName, Name = name };
             var result = _service.UpdateStudent(id, student).Result;
-            Assert.That(result, Is.EqualTo(resultExpexted));
-            if (result)
+            Assert.Multiple(() =>
             {
-                //Valida que no esté borrado
-                Assert.That(student.IsDeleted, Is.False);
-                Assert.That(student.DeletedBy, Is.Null);
-                //Valida que esté modificado
-                Assert.That(student.LastModifiedBy, Is.Not.Null);
-                Assert.That(student.LastModifiedDate, Is.Not.Null);
-                //Valida que tenga la información de creación
-                NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
-                Assert.That(student.CreatedBy, Is.Not.Null);
-                Assert.That(student.CreatedDate, @null);
-            }
+                Assert.That(result, Is.EqualTo(resultExpexted));
+                if (result)
+                {
+                    //Valida que no esté borrado
+                    Assert.That(student.IsDeleted, Is.False);
+                    Assert.That(student.DeletedBy, Is.Null);
+                    //Valida que esté modificado
+                    Assert.That(student.LastModifiedBy, Is.Not.Null);
+                    Assert.That(student.LastModifiedDate, Is.Not.Null);
+                    //Valida que tenga la información de creación
+                    NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
+                    Assert.That(student.CreatedBy, Is.Not.Null);
+                    Assert.That(student.CreatedDate, @null);
+                }
+            });
         }
 
         [TestCase(1, 1, "lastName1 ", "")]
@@ -123,17 +130,20 @@ namespace TestProject.Services
         {
             Student? student = _service.GetStudentById(id).Result;
             var result = _service.DeleteStudent(id).Result;
-            Assert.That(result, Is.EqualTo(resultExpexted));
-            if (student != null)
+            Assert.Multiple(() =>
             {
-                //Valida que esté borrado
-                Assert.That(student.IsDeleted, Is.True);
-                Assert.That(student.DeletedBy, Is.Not.Null);
-                //Valida que tenga la información de creación
-                NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
-                Assert.That(student.CreatedBy, Is.Not.Null);
-                Assert.That(student.CreatedDate, @null);
-            }
+                Assert.That(result, Is.EqualTo(resultExpexted));
+                if (student != null)
+                {
+                    //Valida que esté borrado
+                    Assert.That(student.IsDeleted, Is.True);
+                    Assert.That(student.DeletedBy, Is.Not.Null);
+                    //Valida que tenga la información de creación
+                    NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
+                    Assert.That(student.CreatedBy, Is.Not.Null);
+                    Assert.That(student.CreatedDate, @null);
+                }
+            });
         }
 
     }
