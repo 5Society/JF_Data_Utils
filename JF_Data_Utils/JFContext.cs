@@ -1,6 +1,7 @@
 ﻿using JF.Utils.Data.Helper;
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
 
@@ -31,6 +32,7 @@ namespace JF.Utils.Data
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
+            ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
             ValidateAnnotations();
@@ -44,12 +46,18 @@ namespace JF.Utils.Data
         
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
+            ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
             ValidateAnnotations();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
+        private void ValidateUpdateEntities()
+        {
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified))
+                if (entry.GetDatabaseValues() == null) entry.State = EntityState.Unchanged;
+        }
         private void UpdateSoftDelete()
         {
             foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
@@ -69,6 +77,8 @@ namespace JF.Utils.Data
         private void UpdateAuditable()
         {
             foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable))))
+            {
+                PropertyValues? databaseValues = entry.GetDatabaseValues();
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -79,10 +89,13 @@ namespace JF.Utils.Data
                         break;
                     case EntityState.Modified:
                         entry.State = EntityState.Modified;
+                        entry.CurrentValues["CreatedDate"] = databaseValues?["CreatedDate"];
+                        entry.CurrentValues["CreatedBy"] = databaseValues?["CreatedBy"];
                         entry.CurrentValues["LastModifiedDate"] = DateTime.Now;
                         entry.CurrentValues["LastModifiedBy"] = _username;
                         break;
                 }
+            }
         }
         private void ValidateAnnotations()
         {
