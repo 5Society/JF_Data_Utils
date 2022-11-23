@@ -44,6 +44,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
         public async Task<bool> UpdateStudent(int id, Student student)
         {
+            if (id != student.Id) return false;
             _studentRepository.Update(student);
             return await _studentRepository.UnitOfWork.SaveChangesAsync() >0;
 
