@@ -32,6 +32,7 @@ namespace JF.Utils.Data
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
+            ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
             ValidateAnnotations();
@@ -45,12 +46,18 @@ namespace JF.Utils.Data
         
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
+            ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
             ValidateAnnotations();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
+        private void ValidateUpdateEntities()
+        {
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified))
+                if (entry.GetDatabaseValues() == null) entry.State = EntityState.Unchanged;
+        }
         private void UpdateSoftDelete()
         {
             foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
