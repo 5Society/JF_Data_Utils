@@ -1,6 +1,7 @@
 ﻿using JF.Utils.Data.Helper;
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
 
@@ -69,6 +70,8 @@ namespace JF.Utils.Data
         private void UpdateAuditable()
         {
             foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable))))
+            {
+                PropertyValues? databaseValues = entry.GetDatabaseValues();
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -79,10 +82,13 @@ namespace JF.Utils.Data
                         break;
                     case EntityState.Modified:
                         entry.State = EntityState.Modified;
+                        entry.CurrentValues["CreatedDate"] = databaseValues?["CreatedDate"];
+                        entry.CurrentValues["CreatedBy"] = databaseValues?["CreatedBy"];
                         entry.CurrentValues["LastModifiedDate"] = DateTime.Now;
                         entry.CurrentValues["LastModifiedBy"] = _username;
                         break;
                 }
+            }
         }
         private void ValidateAnnotations()
         {
