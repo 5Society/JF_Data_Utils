@@ -1,12 +1,6 @@
 
 
-using API_JF_Data_Utils_Example.Core.Interfaces;
-using API_JF_Data_Utils_Example.Core.Models;
-using API_JF_Data_Utils_Example.DataAccess;
-using JF.Utils.Data;
-using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
