@@ -2,6 +2,7 @@
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.ComponentModel.DataAnnotations;
 
 namespace JF.Utils.Data
 {
@@ -32,6 +33,7 @@ namespace JF.Utils.Data
         {
             UpdateSoftDelete();
             UpdateAuditable();
+            ValidateAnnotations();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
         public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
@@ -42,8 +44,9 @@ namespace JF.Utils.Data
         
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            UpdateSoftDelete(); 
+            UpdateSoftDelete();
             UpdateAuditable();
+            ValidateAnnotations();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
@@ -81,7 +84,18 @@ namespace JF.Utils.Data
                         break;
                 }
         }
-
+        private void ValidateAnnotations()
+        {
+            var entities = from e in ChangeTracker.Entries()
+                           where e.State == EntityState.Added
+                               || e.State == EntityState.Modified
+                           select e.Entity;
+            foreach (var entity in entities)
+            {
+                var validationContext = new ValidationContext(entity);
+                Validator.ValidateObject(entity, validationContext);
+            }
+        }
         public IDbContextTransaction BeginTransaction()
         {
             if (_currentTransaction != null) return null!;
