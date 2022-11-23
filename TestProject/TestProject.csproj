@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <IsPublishable>False</IsPublishable>
+
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+
+    <AnalysisLevel>latest-all</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +20,10 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\API_JF_Data_Utils_Example\API_JF_Data_Utils_Example.csproj" />
   </ItemGroup>
 
 </Project>
