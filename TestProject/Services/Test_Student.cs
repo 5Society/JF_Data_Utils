@@ -22,12 +22,9 @@ namespace TestProject.Services
 
         [TestCase("lastName", "name", true)]
         [TestCase("Pepito", "Perez", true)]
-        [TestCase("", "name", false)]
-        [TestCase("lastName", "", false)]
-        [TestCase("Pepito", null, true)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddStudent(string lastName, string name, bool resultExpexted)
+        public void AddStudent_Ok(string lastName, string name, bool resultExpexted)
         {
             Student student = new Student() { LastName=lastName, Name=name };
             var result = _service.AddStudent(student).Result;
@@ -44,6 +41,18 @@ namespace TestProject.Services
                 Assert.IsNotNull(student.CreatedBy);
                 Assert.IsNotNull(student.CreatedDate);
             }
+        }
+
+        [TestCase("", "name")]
+        [TestCase("lastName", "")]
+        [TestCase("Pepito", null)]
+        [NonParallelizable]
+        [Test, Order(1)]
+        public void AddStudent_Exception(string lastName, string name)
+        {
+            Student student = new Student() { LastName = lastName, Name = name };
+            var result = _service.AddStudent(student);
+            Assert.That(() => _service.AddStudent(student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [Test, Order(2)]
@@ -65,14 +74,12 @@ namespace TestProject.Services
         
         [TestCase(1, 1, "lastName1 ", "name 1", true)]
         [TestCase(2, 2, "Pepito 1", "Pepito 2", true)]
-        [TestCase(1, 1, "lastName1 ", "", false)]
-        [TestCase(2, 2, "", "Pepito 2", false)]
         [TestCase(1, 10, "lastName1 ", "name 1", false)]
         [TestCase(2, 20, "Pepito 1", "Pepito 2", false)]
-        [TestCase(10, 10, "lastName1 ", "name 1", false)]
-        [TestCase(20, 20, "Pepito 1", "Pepito 2", false)]
+        [TestCase(10, 10, "lastName1 ", "name 1",false)]
+        [TestCase(20, 20, "Pepito 1", "Pepito 2",false)]
         [Test, Order(2)]
-        public void UpdateStudent(int id, int studentId, string lastName, string name, bool resultExpexted)
+        public void UpdateStudent_OK(int id, int studentId, string lastName, string name, bool resultExpexted)
         {
             Student student = new Student() { Id= studentId, LastName = lastName, Name = name };
             var result = _service.UpdateStudent(id, student).Result;
@@ -89,6 +96,17 @@ namespace TestProject.Services
                 Assert.IsNotNull(student.CreatedBy);
                 Assert.IsNotNull(student.CreatedDate);
             }
+        }
+
+        [TestCase(1, 1, "lastName1 ", "")]
+        [TestCase(2, 2, "", "Pepito 2")]
+        [TestCase(1, 1, "lastName1 ", null)]
+        [TestCase(2, 2, null, "Pepito 2")]
+        [Test, Order(2)]
+        public void UpdateStudent_Exception(int id, int studentId, string lastName, string name)
+        {
+            Student student = new Student() { Id = studentId, LastName = lastName, Name = name };
+            Assert.That(() => _service.UpdateStudent(id, student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [NonParallelizable]
