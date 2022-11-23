@@ -1,7 +1,9 @@
 ﻿using JF.Utils.Data.Helper;
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.ComponentModel.DataAnnotations;
 
 namespace JF.Utils.Data
 {
@@ -24,69 +26,89 @@ namespace JF.Utils.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => !e.IsDeleted);
+            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => e.DeletedDate==null);
             base.OnModelCreating(modelBuilder);
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
+            ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
+            ValidateAnnotations();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
         public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
 
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            UpdateSoftDelete();
-            UpdateAuditable();
-            return await base.SaveChangesAsync(cancellationToken);
-        }
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
+            => await SaveChangesAsync(acceptAllChangesOnSuccess:true, cancellationToken);
+        
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            UpdateSoftDelete(); 
+            ValidateUpdateEntities();
+            UpdateSoftDelete();
             UpdateAuditable();
+            ValidateAnnotations();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
+        private void ValidateUpdateEntities()
+        {
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified))
+                if (entry.GetDatabaseValues() == null) entry.State = EntityState.Unchanged;
+        }
         private void UpdateSoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries().Where(e=>e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
-                //if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete)))
-                    switch (entry.State)
-                    {
-                        case EntityState.Added:
-                            entry.CurrentValues["DeletedDate"] = false;
-                            entry.CurrentValues["DeletedBy"] = false;
-                            break;
-                        case EntityState.Deleted:
-                            entry.State = EntityState.Modified;
-                            entry.CurrentValues["DeletedDate"] = DateTime.Now;
-                            entry.CurrentValues["DeletedBy"] = _username;
-                            break;
-                    }
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["DeletedDate"] = null;
+                        entry.CurrentValues["DeletedBy"] = null;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["DeletedDate"] = DateTime.Now;
+                        entry.CurrentValues["DeletedBy"] = _username;
+                        break;
+                }
         }
         private void UpdateAuditable()
         {
-            foreach (var entry in ChangeTracker.Entries())
-                if (entry.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable)))
-                    switch (entry.State)
-                    {
-                        case EntityState.Added:
-                            entry.CurrentValues["CreatedDate"] = DateTime.Now;
-                            entry.CurrentValues["CreatedBy"] = _username;
-                            entry.CurrentValues["LastModifiedDate"] = null;
-                            entry.CurrentValues["LastModifiedBy"] = null;
-                            break;
-                        case EntityState.Modified:
-                            entry.State = EntityState.Modified;
-                            entry.CurrentValues["LastModifiedDate"] = DateTime.Now;
-                            entry.CurrentValues["LastModifiedBy"] = _username;
-                            break;
-                    }
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable))))
+            {
+                PropertyValues? databaseValues = entry.GetDatabaseValues();
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["CreatedDate"] = DateTime.Now;
+                        entry.CurrentValues["CreatedBy"] = _username;
+                        entry.CurrentValues["LastModifiedDate"] = null;
+                        entry.CurrentValues["LastModifiedBy"] = null;
+                        break;
+                    case EntityState.Modified:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["CreatedDate"] = databaseValues?["CreatedDate"];
+                        entry.CurrentValues["CreatedBy"] = databaseValues?["CreatedBy"];
+                        entry.CurrentValues["LastModifiedDate"] = DateTime.Now;
+                        entry.CurrentValues["LastModifiedBy"] = _username;
+                        break;
+                }
+            }
         }
-
+        private void ValidateAnnotations()
+        {
+            var entities = from e in ChangeTracker.Entries()
+                           where e.State == EntityState.Added
+                               || e.State == EntityState.Modified
+                           select e.Entity;
+            foreach (var entity in entities)
+            {
+                var validationContext = new ValidationContext(entity);
+                Validator.ValidateObject(entity, validationContext);
+            }
+        }
         public IDbContextTransaction BeginTransaction()
         {
             if (_currentTransaction != null) return null!;
