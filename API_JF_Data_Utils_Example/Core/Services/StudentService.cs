@@ -32,7 +32,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
         public IEnumerable<Student> GetAllStudents(int page, int pagesize)
         {
-            return _studentRepository.GetAll().GetPaged(page, pagesize).Results;
+            return _studentRepository.GetAll().GetPaged(page, pagesize).GetResults();
         }
 
         public async Task<Student?> GetStudentById(int id)
