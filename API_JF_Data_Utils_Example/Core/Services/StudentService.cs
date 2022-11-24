@@ -1,9 +1,7 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
 using API_JF_Data_Utils_Example.DataAccess.Interfaces;
-using API_JF_Data_Utils_Example.DataAccess.Repositories;
-using JF.Utils.Data;
-using JF.Utils.Data.Interfaces;
+using JF.Utils.Data.Extensions;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
@@ -32,9 +30,9 @@ namespace API_JF_Data_Utils_Example.Core.Services
             return await _studentRepository.UnitOfWork.SaveChangesAsync()>0;
         }
 
-        public IEnumerable<Student> GetAllStudents()
+        public IEnumerable<Student> GetAllStudents(int page, int pagesize)
         {
-            return _studentRepository.GetAll();
+            return _studentRepository.GetAll().GetPaged(page, pagesize).GetResults();
         }
 
         public async Task<Student?> GetStudentById(int id)

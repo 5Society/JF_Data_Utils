@@ -24,6 +24,8 @@ JF_Data_Utils provides a general aproach to data entities persintence. ([Impleme
 ## Dependencies:
 * Framework: .NET 7
 * Microsoft.EntityFrameworkCore
+* NUnit
+* Coverlet
 
 ## Getting Started
 To learn hoy to use the library , review the example project: API_JF_Data_Utils_Example
