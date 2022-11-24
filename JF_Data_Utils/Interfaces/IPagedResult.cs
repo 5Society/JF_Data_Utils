@@ -14,7 +14,7 @@ namespace JF.Utils.Data.Interfaces
         int PageCount { get;  }
         int PageSize { get; }
         int RowCount { get; }
-        IList<TEntity> Results { get; }
+        IList<TEntity> GetResults();
 
     }
 }

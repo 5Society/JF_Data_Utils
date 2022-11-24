@@ -14,7 +14,9 @@ namespace JF.Utils.Data
         public int PageCount { get; internal set; }
         public int PageSize { get; internal set; }
         public int RowCount { get; internal set; }
-        public IList<TEntity> Results { get => Query.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList(); }
+        public IList<TEntity> GetResults() { 
+            return Query.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList(); 
+        }
 
         public JFPagedResult(IQueryable<TEntity> query)
         {
