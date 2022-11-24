@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
@@ -60,11 +61,16 @@ namespace TestProject.Services
             Assert.That(() => _service.AddStudent(student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
+        [TestCase(1, 100, 2)]
+        [TestCase(1, 1, 1)]
+        [TestCase(2, 1, 1)]
+        [TestCase(3, 1, 0)]
+        [TestCase(4, 10, 0)]
         [Test, Order(2)]
-        public void GetAllStudents()
+        public void GetAllStudents(int page, int pagesize, int resultExpexted)
         {
-            var result = _service.GetAllStudents();
-            Assert.That(result.Count(), Is.EqualTo(2));
+            var result = _service.GetAllStudents(page, pagesize);
+            Assert.That(result.Count(), Is.EqualTo(resultExpexted));
         }
 
         [TestCase(1, true)]

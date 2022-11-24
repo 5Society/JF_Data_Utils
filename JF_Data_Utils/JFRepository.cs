@@ -2,9 +2,9 @@
 
 namespace JF.Utils.Data
 {
-    public class JFRepositoryBase<TEntity> : JFReadRepositoryBase<TEntity>, IRepositoryBase<TEntity> where TEntity : class
+    public class JFRepository<TEntity> : JFReadRepositoryBase<TEntity>, IRepositoryBase<TEntity> where TEntity : class
     {
-        public JFRepositoryBase(IUnitOfWork context) : base(context)
+        public JFRepository(IUnitOfWork context) : base(context)
         {
         }
 
