@@ -19,9 +19,9 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<Student> Get()
+        public ActionResult<Student> Get(int page, int pageSize)
         {
-            var results = _studentService.GetAllStudents();
+            var results = _studentService.GetAllStudents(page, pageSize);
             return Ok(results);
         }
 
