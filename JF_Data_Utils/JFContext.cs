@@ -32,11 +32,6 @@ namespace JF.Utils.Data
 
         public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
 
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
-            => await SaveChangesAsync(acceptAllChangesOnSuccess:true, cancellationToken);
-        
-        
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             ValidateUpdateEntities();
@@ -45,6 +40,11 @@ namespace JF.Utils.Data
             ValidateAnnotations();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
+            => await SaveChangesAsync(acceptAllChangesOnSuccess:true, cancellationToken);
+        
+      
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             ValidateUpdateEntities();
