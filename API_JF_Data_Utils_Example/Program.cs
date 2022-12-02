@@ -19,7 +19,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<JFContext>(options => { options.UseInMemoryDatabase("Test"); });
 // Add Services
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+// Add Repositories
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IUnitOfWork, ApplicationContext>();
 
 var app = builder.Build();

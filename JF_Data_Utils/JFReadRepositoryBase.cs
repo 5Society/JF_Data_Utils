@@ -70,6 +70,11 @@ namespace JF.Utils.Data
         {
             return await _entities.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
         }
+        
+        public virtual TEntity? GetById<TId>(TId id) where TId : notnull
+        {
+            return _entities.Find(new object[] { id });
+        }
 
         public virtual async Task<TEntity?> GetBySpecAsync<Spec>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
