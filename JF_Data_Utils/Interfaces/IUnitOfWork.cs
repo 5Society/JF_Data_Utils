@@ -18,6 +18,7 @@ namespace JF.Utils.Data.Interfaces
         Task<bool> CommitTransactionAsync();
         void RollbackTransaction();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        int SaveChanges();
 
     }
 }

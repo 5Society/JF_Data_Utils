@@ -15,6 +15,8 @@ namespace JF.Utils.Data.Interfaces
 
         Task<TEntity?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull;
 
+        TEntity? GetById<TId>(TId id) where TId : notnull;
+
         Task<TEntity?> GetBySpecAsync<Spec>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
         Task<ICollection<TEntity>> ListAsync(CancellationToken cancellationToken = default);
