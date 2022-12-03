@@ -19,6 +19,6 @@ namespace API_JF_Data_Utils_Example.Core.Models
         [Column("Summary", TypeName = "varchar")]
         public string Summary { get; set; } = "";
 
-        public virtual ICollection<Salon> Salons { get; set; }
+        public virtual ICollection<Salon>? Salons { get; set; }
     }
 }
