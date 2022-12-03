@@ -9,7 +9,7 @@ namespace API_JF_Data_Utils_Example.DataAccess
         public DbSet<Student> Students => Set<Student>();
         public DbSet<Teacher> Teachers => Set<Teacher>();
         public DbSet<Course> Courses => Set<Course>();
-        public DbSet<Class> Classes => Set<Class>();
+        public DbSet<Salon> Salons => Set<Salon>();
 
         public ApplicationContext(DbContextOptions<JFContext> options) : base(options) { }
 

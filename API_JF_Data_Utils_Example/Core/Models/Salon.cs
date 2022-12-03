@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API_JF_Data_Utils_Example.Core.Models
 {
-    public class Class : EntityAuditable
+    public class Salon : EntityAuditable
     {
         [Key]
         public int Id { get; set; }
