@@ -9,19 +9,19 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CourseController : ControllerBase
+    public class TeacherController : ControllerBase
     {
-        private readonly ICourseService _courseService;
+        private readonly ITeacherService _teacherService;
 
-        public CourseController(ICourseService courseService)
+        public TeacherController(ITeacherService teacherService)
         {
-            _courseService = courseService;
+            _teacherService = teacherService;
         }
 
         [HttpGet()]
-        public ActionResult<Course> Get(int page, int pageSize)
+        public ActionResult<Teacher> Get(int page, int pageSize)
         {
-            var results = _courseService.GetAllCourses(page, pageSize);
+            var results = _teacherService.GetAllTeachers(page, pageSize);
             return Ok(results);
         }
 
@@ -29,7 +29,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var entity = _courseService.GetCourseById(id);
+            var entity = _teacherService.GetTeacherById(id);
 
             if (entity is null)
                 return NotFound($"Entity with Id = {id} not found.");
@@ -38,13 +38,13 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Course> Post([FromBody] Course entity)
+        public ActionResult<Teacher> Post([FromBody] Teacher entity)
         {
 
             if (entity is null)
                 return BadRequest(ModelState);
 
-            bool result = _courseService.AddCourse(entity);
+            bool result = _teacherService.AddTeacher(entity);
 
             if (!result)
                 return BadRequest("Your changes have not been saved.");
@@ -53,7 +53,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Course entity)
+        public IActionResult Put(int id, [FromBody] Teacher entity)
         {
             if (entity is null)
                 return BadRequest(ModelState);
@@ -61,7 +61,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             if (id != entity.Id)
                 return BadRequest("Identifier is not valid or Identifiers don't match.");
 
-            bool result = _courseService.UpdateCourse(id, entity);
+            bool result = _teacherService.UpdateTeacher(id, entity);
 
             if (!result)
                 return BadRequest("Your changes have not been saved.");
@@ -72,7 +72,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            bool result = _courseService.DeleteCourse(id);
+            bool result = _teacherService.DeleteTeacher(id);
 
             if (!result) return NotFound($"Entity with Id = {id} not found");
 
