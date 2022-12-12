@@ -35,13 +35,13 @@ namespace TestProject.Services
                 Assert.That(result, Is.EqualTo(resultExpexted));
                 if (result)
                 {
-                    //Valida que no esté borrado
+                    //Valida que no estï¿½ borrado
                     Assert.That(student.IsDeleted, Is.False);
                     Assert.That(student.DeletedBy, Is.Null);
-                    //Valida que no esté modificad  o
+                    //Valida que no estï¿½ modificad  o
                     Assert.That(student.LastModifiedBy, Is.Null);
                     Assert.That(student.LastModifiedDate, Is.Null);
-                    //Valida que tenga la información de creación
+                    //Valida que tenga la informaciï¿½n de creaciï¿½n
                     NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
                     Assert.That(student.CreatedBy, Is.Not.Null);
                     Assert.That(student.CreatedDate, @null);
@@ -57,7 +57,6 @@ namespace TestProject.Services
         public void AddStudent_Exception(string lastName, string name)
         {
             Student student = new Student() { LastName = lastName, Name = name };
-            var result = _service.AddStudent(student);
             Assert.That(() => _service.AddStudent(student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
@@ -99,13 +98,13 @@ namespace TestProject.Services
                 Assert.That(result, Is.EqualTo(resultExpexted));
                 if (result)
                 {
-                    //Valida que no esté borrado
+                    //Valida que no estï¿½ borrado
                     Assert.That(student.IsDeleted, Is.False);
                     Assert.That(student.DeletedBy, Is.Null);
-                    //Valida que esté modificado
+                    //Valida que estï¿½ modificado
                     Assert.That(student.LastModifiedBy, Is.Not.Null);
                     Assert.That(student.LastModifiedDate, Is.Not.Null);
-                    //Valida que tenga la información de creación
+                    //Valida que tenga la informaciï¿½n de creaciï¿½n
                     NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
                     Assert.That(student.CreatedBy, Is.Not.Null);
                     Assert.That(student.CreatedDate, @null);
@@ -141,10 +140,10 @@ namespace TestProject.Services
                 Assert.That(result, Is.EqualTo(resultExpexted));
                 if (student != null)
                 {
-                    //Valida que esté borrado
+                    //Valida que estï¿½ borrado
                     Assert.That(student.IsDeleted, Is.True);
                     Assert.That(student.DeletedBy, Is.Not.Null);
-                    //Valida que tenga la información de creación
+                    //Valida que tenga la informaciï¿½n de creaciï¿½n
                     NUnit.Framework.Constraints.NullConstraint @null = Is.Not.Null;
                     Assert.That(student.CreatedBy, Is.Not.Null);
                     Assert.That(student.CreatedDate, @null);
