@@ -64,5 +64,10 @@ namespace JF.Utils.Data
             _entities.Update(entity);
             return await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public virtual bool ValidateEntityModel(TEntity entity)
+        {
+            return true;
+        }
     }
 }

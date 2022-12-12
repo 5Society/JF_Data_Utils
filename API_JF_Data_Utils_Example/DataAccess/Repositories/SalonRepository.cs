@@ -10,5 +10,16 @@ namespace API_JF_Data_Utils_Example.DataAccess.Repositories
         public SalonRepository(IUnitOfWork context) : base(context)
         {
         }
+
+        public override bool ValidateEntityModel(Salon salon)
+        {
+            if (salon.TeacherId != null)
+            {
+                TeacherRepository tr = new TeacherRepository(UnitOfWork);
+                Teacher? t = tr.GetById(salon.TeacherId.Value);
+                if (t == null) return false;
+            }
+            return true;
+        }
     }
 }

@@ -16,16 +16,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
         }
         public bool AddSalon(Salon salon)
         {
-            
-            if (salon.TeacherId != null)
-            {
-                TeacherRepository tr = new TeacherRepository(_salonRepository.UnitOfWork);
-                Teacher? t = tr.GetById(salon.TeacherId.Value);
-                salon.Teacher = t;
-            }
-            
-            if (salon.Teacher?.Id != salon.TeacherId) return false;
-            
+            if (!_salonRepository.ValidateEntityModel(salon)) return false;
             _salonRepository.Add(salon);
             return (_salonRepository.UnitOfWork.SaveChanges()) > 0;
         }
@@ -54,9 +45,11 @@ namespace API_JF_Data_Utils_Example.Core.Services
         public bool UpdateSalon(int id, Salon salon)
         {
             if (id != salon.Id) return false;
+            if (!_salonRepository.ValidateEntityModel(salon)) return false;
             _salonRepository.Update(salon);
             return _salonRepository.UnitOfWork.SaveChanges() >0;
-
         }
+
+        
     }
 }
