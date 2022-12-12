@@ -75,10 +75,11 @@ namespace TestProject.Services
             Assert.That(() => _service.AddSalon(salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
-        [TestCase(1, 100, 2)]
+        [TestCase(1, 100, 3)]
         [TestCase(1, 1, 1)]
-        [TestCase(2, 1, 1)]
-        [TestCase(3, 1, 0)]
+        [TestCase(1, 2, 2)]
+        [TestCase(2, 2, 1)]
+        [TestCase(3, 1, 1)]
         [TestCase(4, 10, 0)]
         [Test, Order(2)]
         public void GetAllSalons(int page, int pagesize, int resultExpexted)
@@ -89,7 +90,8 @@ namespace TestProject.Services
 
         [TestCase(1, true)]
         [TestCase(2, true)]
-        [TestCase(3, false)]
+        [TestCase(3, true)]
+        [TestCase(4, false)]
         [Test, Order(2)]
         public void GetSalonById(int id, bool resultExpexted)
         {
@@ -97,16 +99,19 @@ namespace TestProject.Services
             Assert.That(result != null, Is.EqualTo(resultExpexted));
         }
 
-        [TestCase(1, 1, "name1 ", "sumary 1", true)]
-        [TestCase(2, 2, "name 1", "summary 2", true)]
-        [TestCase(1, 10, "test1 ", "test 1", false)]
-        [TestCase(2, 20, "test 1", "test 2", false)]
-        [TestCase(10, 10, "Name1 ", "summary 1", false)]
-        [TestCase(20, 20, "test 1", "test 2", false)]
+        [TestCase(1, 1, "name1 ", 1, 1, true)]
+        [TestCase(1, 1, "name1 ", 2, 1, true)]
+        [TestCase(1, 1, "name1 ", 2, 2, true)]
+        [TestCase(1, 1, "name1 ", 2, 20, false)]
+        [TestCase(2, 2, "name 1", 1, 1, true)]
+        [TestCase(1, 10, "test1 ", 1,1, false)]
+        [TestCase(2, 20, "test 1", 1,1, false)]
+        [TestCase(10, 10, "Name1 ", 1, 1, false)]
+        [TestCase(20, 20, "test 1", 1, 1, false)]
         [Test, Order(2)]
-        public void UpdateSalon_OK(int id, int SalonId, string name, string summary, bool resultExpexted)
+        public void UpdateSalon_OK(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
-            Salon salon = new Salon() { Id = SalonId, Name = name};
+            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
             bool result = _service.UpdateSalon(id, salon);
             Assert.Multiple(() =>
             {
@@ -120,14 +125,14 @@ namespace TestProject.Services
             });
         }
 
-        [TestCase(1, 1, "lastName1 ", "")]
-        [TestCase(2, 2, "", "Pepito 2")]
-        [TestCase(1, 1, "lastName1 ", null)]
-        [TestCase(2, 2, null, "Pepito 2")]
+        [TestCase(1, 1, "Salon 1", 10,1)]
+        [TestCase(2, 2, "", 1,1)]
+        [TestCase(1, 1, "salon 1", 0,1)]
+        [TestCase(2, 2, null, 1,1)]
         [Test, Order(2)]
-        public void UpdateSalon_Exception(int id, int SalonId, string name, string summary)
+        public void UpdateSalon_Exception(int id, int SalonId, string name, int idCourse, int idTeacher)
         {
-            Salon salon = new Salon() { Id = SalonId, Name = name };
+            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId= idCourse, TeacherId= idTeacher };
             Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
