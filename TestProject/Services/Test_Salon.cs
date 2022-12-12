@@ -21,7 +21,7 @@ namespace TestProject.Services
             SalonRepository repository = new SalonRepository(context);
             _service = new SalonService(repository);
             //Create Courses to test
-            if (context.Courses.Count() == 0)
+            if (!context.Courses.Any())
             {
                 context.Courses.Add(new Course() { Name = "Test1", Summary = "Summary 1" });
                 context.Courses.Add(new Course() { Name = "Test2", Summary = "Summary 2" });
@@ -29,7 +29,7 @@ namespace TestProject.Services
                 context.SaveChanges();
             }
             //Creates Tearchers to test
-            if (context.Teachers.Count() == 0)
+            if (!context.Teachers.Any())
             {
                 context.Teachers.Add(new Teacher() { Name = "Test1", LastName = "Test 1" });
                 context.Teachers.Add(new Teacher() { Name = "Test2", LastName = "Test 2" });
