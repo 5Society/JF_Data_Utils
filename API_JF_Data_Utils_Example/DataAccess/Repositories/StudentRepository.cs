@@ -5,7 +5,7 @@ using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.DataAccess.Repositories
 {
-    public class StudentRepository : JFRepository<Student>, IStudentRepository
+    public class StudentRepository : JFRepositoryBase<Student>, IStudentRepository
     {
         public StudentRepository(IUnitOfWork context) : base(context)
         {

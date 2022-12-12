@@ -5,7 +5,7 @@ using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.DataAccess.Repositories
 {
-    public class SalonRepository : JFRepository<Salon>, ISalonRepository
+    public class SalonRepository : JFRepositoryBase<Salon>, ISalonRepository
     {
         public SalonRepository(IUnitOfWork context) : base(context)
         {

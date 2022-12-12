@@ -1,6 +1,7 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
 using API_JF_Data_Utils_Example.DataAccess.Interfaces;
+using API_JF_Data_Utils_Example.DataAccess.Repositories;
 using JF.Utils.Data.Extensions;
 
 namespace API_JF_Data_Utils_Example.Core.Services
@@ -15,6 +16,16 @@ namespace API_JF_Data_Utils_Example.Core.Services
         }
         public bool AddSalon(Salon salon)
         {
+            
+            if (salon.TeacherId != null)
+            {
+                TeacherRepository tr = new TeacherRepository(_salonRepository.UnitOfWork);
+                Teacher? t = tr.GetById(salon.TeacherId.Value);
+                salon.Teacher = t;
+            }
+            
+            if (salon.Teacher?.Id != salon.TeacherId) return false;
+            
             _salonRepository.Add(salon);
             return (_salonRepository.UnitOfWork.SaveChanges()) > 0;
         }

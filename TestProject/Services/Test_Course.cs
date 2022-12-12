@@ -105,8 +105,8 @@ namespace TestProject.Services
         [Test, Order(2)]
         public void UpdateCourse_Exception(int id, int courseId, string name, string summary)
         {
-            Course student = new Course() { Id = courseId, Name = name, Summary = summary };
-            Assert.That(() => _service.UpdateCourse(id, student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
+            Course course = new Course() { Id = courseId, Name = name, Summary = summary };
+            Assert.That(() => _service.UpdateCourse(id, course), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [NonParallelizable]
