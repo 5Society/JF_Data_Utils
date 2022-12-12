@@ -29,5 +29,7 @@ namespace JF.Utils.Data.Interfaces
         void Update(TEntity entity);
 
         Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
+
+        bool ValidateEntityModel(TEntity entity);
     }
 }
