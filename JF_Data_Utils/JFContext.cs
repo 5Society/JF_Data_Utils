@@ -37,7 +37,7 @@ namespace JF.Utils.Data
             ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
-            ValidateAnnotations();
+            ValidateModelEntity();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
@@ -50,7 +50,7 @@ namespace JF.Utils.Data
             ValidateUpdateEntities();
             UpdateSoftDelete();
             UpdateAuditable();
-            ValidateAnnotations();
+            ValidateModelEntity();
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
@@ -59,10 +59,6 @@ namespace JF.Utils.Data
             //Validates if the record to be modified exists in the database. If it does not exist, change the status to not persist it.
             foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Modified))
                 if (entry.GetDatabaseValues() == null) entry.State = EntityState.Unchanged;
-            //Load references
-            foreach (var entry in ChangeTracker.Entries().Where(e => (e.State == EntityState.Added) || (e.State == EntityState.Modified)))
-                foreach (var reference in entry.References)
-                    reference.Load();
         }
         private void UpdateSoftDelete()
         {
@@ -103,8 +99,13 @@ namespace JF.Utils.Data
                 }
             }
         }
-        private void ValidateAnnotations()
+        private void ValidateModelEntity()
         {
+            //Load references
+            foreach (var entry in ChangeTracker.Entries().Where(e => (e.State == EntityState.Added) || (e.State == EntityState.Modified)))
+                foreach (var reference in entry.References)
+                    reference.Load();
+            //Validates entity's model
             var entities = from e in ChangeTracker.Entries()
                            where e.State == EntityState.Added
                                || e.State == EntityState.Modified
