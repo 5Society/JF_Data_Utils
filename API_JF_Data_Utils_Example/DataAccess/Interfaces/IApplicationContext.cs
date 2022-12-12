@@ -9,6 +9,6 @@ namespace API_JF_Data_Utils_Example.DataAccess.Interfaces
         public DbSet<Student> Students { get; }
         public DbSet<Teacher> Teachers { get; }
         public DbSet<Course> Courses { get; }
-        public DbSet<Class> Classes { get; }
+        public DbSet<Salon> Classes { get; }
     }
 }

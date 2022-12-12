@@ -2,9 +2,9 @@
 
 namespace JF.Utils.Data
 {
-    public class JFRepository<TEntity> : JFReadRepositoryBase<TEntity>, IRepositoryBase<TEntity> where TEntity : class
+    public class JFRepositoryBase<TEntity> : JFReadRepositoryBase<TEntity>, IRepositoryBase<TEntity> where TEntity : class
     {
-        public JFRepository(IUnitOfWork context) : base(context)
+        public JFRepositoryBase(IUnitOfWork context) : base(context)
         {
         }
 
@@ -63,6 +63,11 @@ namespace JF.Utils.Data
         {
             _entities.Update(entity);
             return await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public virtual bool ValidateEntityModel(TEntity entity)
+        {
+            return true;
         }
     }
 }
