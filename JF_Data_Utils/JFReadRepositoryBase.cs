@@ -1,4 +1,5 @@
-﻿using JF.Utils.Data.Interfaces;
+﻿using JF.Utils.Data.Extensions;
+using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,10 @@ namespace JF.Utils.Data
                 : _entities.AsQueryable();
         }
 
+        public IList<TEntity> GetAllPaged(int page, int pagesize)
+        {
+            return GetAll().GetPaged(page, pagesize).GetResults();
+        }
         public virtual IQueryable<TEntity> GetAllBySpec(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true)
         {
             return asNoTracking ? _entities.Where(predicate).AsNoTracking()
@@ -90,5 +95,7 @@ namespace JF.Utils.Data
         {
             return await _entities.Where(predicate).ToListAsync(cancellationToken);
         }
+
+     
     }
 }

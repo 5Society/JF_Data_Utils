@@ -14,10 +14,7 @@ namespace TestProject.Services
         [SetUp]
         public void Setup()
         {
-            DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
-            options.UseInMemoryDatabase("Test");
-            ApplicationContext context = new ApplicationContext(options.Options);
-            TeacherRepository repository = new TeacherRepository(context);
+            TeacherRepository repository = new TeacherRepository(InitialSetup.GetAppContext);
             _service = new TeacherService(repository);
         }
 

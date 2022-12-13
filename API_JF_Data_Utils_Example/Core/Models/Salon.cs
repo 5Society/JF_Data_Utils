@@ -11,6 +11,7 @@ namespace API_JF_Data_Utils_Example.Core.Models
         [Required]
         [MinLength(2, ErrorMessage = "Name cannot be less than 2")]
         [MaxLength(250, ErrorMessage = "Name cannot be greater than 250")]
+        [Column("Name", TypeName = "varchar")]
         public string Name { get; set; } = "";
 
         [Required]

@@ -15,37 +15,20 @@ namespace TestProject.Services
         [SetUp]
         public void Setup()
         {
-            DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
-            options.UseInMemoryDatabase("Test_Salon");
-            ApplicationContext context = new ApplicationContext(options.Options);
-            SalonRepository repository = new SalonRepository(context);
+            SalonRepository repository = new SalonRepository(InitialSetup.GetAppContextSalon);
             _service = new SalonService(repository);
-            //Create Courses to test
-            if (!context.Courses.Any())
-            {
-                context.Courses.Add(new Course() { Name = "Test1", Summary = "Summary 1" });
-                context.Courses.Add(new Course() { Name = "Test2", Summary = "Summary 2" });
-                context.Courses.Add(new Course() { Name = "Test3", Summary = "Summary 3" });
-                context.SaveChanges();
-            }
-            //Creates Tearchers to test
-            if (!context.Teachers.Any())
-            {
-                context.Teachers.Add(new Teacher() { Name = "Test1", LastName = "Test 1" });
-                context.Teachers.Add(new Teacher() { Name = "Test2", LastName = "Test 2" });
-                context.Teachers.Add(new Teacher() { Name = "Test3", LastName = "Test 3" });
-                context.SaveChanges();
-            }
-            
         }
 
         [TestCase("name", 1, 1,  true)]
         [TestCase("Asignature 1", 2, 1, true)]
         [TestCase("Asignature 1", 2, 50, false)]
         [TestCase("name", 1, null, true)]
+        [TestCase("name", 5, 1, false)]
+        [TestCase("", 1, 1, false)]
+        [TestCase(null, 1, 1, false)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddSalon_Ok(string name, int idCourse, int? idTeacher, bool resultExpexted)
+        public void AddSalon(string name, int idCourse, int? idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Name = name, CourseId= idCourse, TeacherId = idTeacher};
             salon.CourseId = idCourse;
@@ -61,18 +44,6 @@ namespace TestProject.Services
                     Assert.That(salon.DeletedBy, Is.Null);
                 }
             });
-        }
-
-        [TestCase("name", 5, 1)]
-        [TestCase("", 1, 1)]
-        [TestCase(null, 1, 1)]
-        [NonParallelizable]
-        [Test, Order(1)]
-        public void AddSalon_Exception(string name, int idCourse, int? idTeacher)
-        {
-
-            Salon salon = new Salon() { Name = name, CourseId = idCourse, TeacherId = idTeacher };
-            Assert.That(() => _service.AddSalon(salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [TestCase(1, 100, 3)]
@@ -108,8 +79,12 @@ namespace TestProject.Services
         [TestCase(2, 20, "test 1", 1,1, false)]
         [TestCase(10, 10, "Name1 ", 1, 1, false)]
         [TestCase(20, 20, "test 1", 1, 1, false)]
+        [TestCase(1, 1, "Salon 1", 10, 1, false)]
+        [TestCase(2, 2, "", 1, 1, false)]
+        [TestCase(1, 1, "salon 1", 0, 1, false)]
+        [TestCase(2, 2, null, 1, 1, false)]
         [Test, Order(2)]
-        public void UpdateSalon_OK(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
+        public void UpdateSalon(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
             bool result = _service.UpdateSalon(id, salon);
@@ -123,17 +98,6 @@ namespace TestProject.Services
                     Assert.That(salon.DeletedBy, Is.Null);
                 }
             });
-        }
-
-        [TestCase(1, 1, "Salon 1", 10,1)]
-        [TestCase(2, 2, "", 1,1)]
-        [TestCase(1, 1, "salon 1", 0,1)]
-        [TestCase(2, 2, null, 1,1)]
-        [Test, Order(2)]
-        public void UpdateSalon_Exception(int id, int SalonId, string name, int idCourse, int idTeacher)
-        {
-            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId= idCourse, TeacherId= idTeacher };
-            Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [NonParallelizable]
