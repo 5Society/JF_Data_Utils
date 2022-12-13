@@ -14,7 +14,7 @@ namespace TestProject.Services
         [SetUp]
         public void Setup()
         {
-            StudentRepository repository = new StudentRepository(InitialSetup.CreateAppContext());
+            StudentRepository repository = new StudentRepository(InitialSetup.GetAppContext);
             _service = new StudentService(repository);
         }
 

@@ -10,33 +10,38 @@ namespace TestProject
     [SetUpFixture]
     internal class InitialSetup
     {
-        internal static ApplicationContext CreateAppContext()
+        internal static ApplicationContext GetAppContext
         {
-            ApplicationContext appContext;
-            DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
-            options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Test_APIExample;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            appContext = new ApplicationContext(options.Options);
-            return appContext;
+            get
+            {
+                ApplicationContext appContext;
+                DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
+                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Test_APIExample;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                appContext = new ApplicationContext(options.Options);
+                return appContext;
+            }
         }
-
-        internal static ApplicationContext CreateAppContextSalon()
+        internal static ApplicationContext GetAppContextSalon
         {
-            ApplicationContext appContext;
-            DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
-            options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Test_APIExample_Salon;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            appContext = new ApplicationContext(options.Options);
-            return appContext;
+            get
+            {
+                ApplicationContext appContext;
+                DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
+                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Test_APIExample_Salon;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                appContext = new ApplicationContext(options.Options);
+                return appContext;
+            }
         }
 
         [OneTimeSetUp]
         public void GlobalSetup()
         {
-            ApplicationContext appContext = CreateAppContext();
+            ApplicationContext appContext = GetAppContext;
             appContext.Database.EnsureDeleted();
             appContext.Database.EnsureCreated();
             appContext.Dispose();
 
-            ApplicationContext appContextSalon = CreateAppContextSalon();
+            ApplicationContext appContextSalon = GetAppContextSalon;
             appContextSalon.Database.EnsureDeleted();
             appContextSalon.Database.EnsureCreated();
 

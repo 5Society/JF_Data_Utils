@@ -15,7 +15,7 @@ namespace TestProject.Services
         [SetUp]
         public void Setup()
         {
-            SalonRepository repository = new SalonRepository(InitialSetup.CreateAppContextSalon());
+            SalonRepository repository = new SalonRepository(InitialSetup.GetAppContextSalon);
             _service = new SalonService(repository);
         }
 
