@@ -10,7 +10,7 @@ namespace TestProject
     [SetUpFixture]
     internal class InitialSetup
     {
-        public static ApplicationContext CreateAppContext()
+        internal static ApplicationContext CreateAppContext()
         {
             ApplicationContext appContext;
             DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();
@@ -19,7 +19,7 @@ namespace TestProject
             return appContext;
         }
 
-        public static ApplicationContext CreateAppContextSalon()
+        internal static ApplicationContext CreateAppContextSalon()
         {
             ApplicationContext appContext;
             DbContextOptionsBuilder<JFContext> options = new DbContextOptionsBuilder<JFContext>();

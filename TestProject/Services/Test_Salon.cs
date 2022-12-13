@@ -28,7 +28,7 @@ namespace TestProject.Services
         [TestCase(null, 1, 1, false)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddSalon_Ok(string name, int idCourse, int? idTeacher, bool resultExpexted)
+        public void AddSalon(string name, int idCourse, int? idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Name = name, CourseId= idCourse, TeacherId = idTeacher};
             salon.CourseId = idCourse;
@@ -79,8 +79,12 @@ namespace TestProject.Services
         [TestCase(2, 20, "test 1", 1,1, false)]
         [TestCase(10, 10, "Name1 ", 1, 1, false)]
         [TestCase(20, 20, "test 1", 1, 1, false)]
+        [TestCase(1, 1, "Salon 1", 10, 1, false)]
+        [TestCase(2, 2, "", 1, 1, false)]
+        [TestCase(1, 1, "salon 1", 0, 1, false)]
+        [TestCase(2, 2, null, 1, 1, false)]
         [Test, Order(2)]
-        public void UpdateSalon_OK(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
+        public void UpdateSalon(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
             bool result = _service.UpdateSalon(id, salon);
@@ -94,17 +98,6 @@ namespace TestProject.Services
                     Assert.That(salon.DeletedBy, Is.Null);
                 }
             });
-        }
-
-        [TestCase(1, 1, "Salon 1", 10,1)]
-        [TestCase(2, 2, "", 1,1)]
-        [TestCase(1, 1, "salon 1", 0,1)]
-        [TestCase(2, 2, null, 1,1)]
-        [Test, Order(2)]
-        public void UpdateSalon_Exception(int id, int SalonId, string name, int idCourse, int idTeacher)
-        {
-            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId= idCourse, TeacherId= idTeacher };
-            Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [NonParallelizable]

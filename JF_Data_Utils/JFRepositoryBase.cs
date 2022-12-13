@@ -19,7 +19,6 @@ namespace JF.Utils.Data
             if (!ValidateEntityModel(entity)) return false;
             UnitOfWork.BeginTransaction();
             Add(entity);
-            //return  (UnitOfWork.SaveChanges()) > 0;
             return UnitOfWork.CommitTransaction();
         }
 
@@ -56,8 +55,9 @@ namespace JF.Utils.Data
         }
         public virtual bool DeleteAndSave(int id)
         {
+            UnitOfWork.BeginTransaction();
             Delete(id);
-            return UnitOfWork.SaveChanges() > 0;
+            return UnitOfWork.CommitTransaction();
         }
 
 
@@ -86,14 +86,15 @@ namespace JF.Utils.Data
         public virtual bool UpdateAndSave(int id, TEntity entity)
         {
             //Validate id entity
-            PropertyInfo? fieldId = entity.GetType().GetProperties().Where(f => f.Name == "Id").FirstOrDefault();
+            PropertyInfo? fieldId = entity.GetType().GetProperties().FirstOrDefault(f => f.Name == "Id");
             if (fieldId == null) throw new ArgumentException("Property Id cannot exists. You must implement this function");
             if (id != ((int)fieldId.GetValue(entity)!)) return false;
             //Validate model entity
             if (!ValidateEntityModel(entity)) return false;
+            UnitOfWork.BeginTransaction();
             //Updates entity
             Update(entity);
-            return UnitOfWork.SaveChanges() > 0;
+            return UnitOfWork.CommitTransaction();
         }
         public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
