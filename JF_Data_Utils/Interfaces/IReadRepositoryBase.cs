@@ -11,6 +11,8 @@ namespace JF.Utils.Data.Interfaces
     {
         IQueryable<TEntity> GetAll(bool asNoTracking = true);
 
+        IList<TEntity> GetAllPaged(int page, int pagesize);
+
         IQueryable<TEntity> GetAllBySpec(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true);
 
         Task<TEntity?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull;

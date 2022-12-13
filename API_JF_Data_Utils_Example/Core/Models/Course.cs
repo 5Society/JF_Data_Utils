@@ -16,7 +16,7 @@ namespace API_JF_Data_Utils_Example.Core.Models
         public string Name { get; set; } = "";
         [Required]
         [MinLength(2, ErrorMessage = "Summary cannot be less than 2")]
-        [Column("Summary", TypeName = "varchar")]
+        [Column("Summary", TypeName = "varchar(MAX)")]
         public string Summary { get; set; } = "";
 
         public virtual ICollection<Salon>? Salons { get; set; }

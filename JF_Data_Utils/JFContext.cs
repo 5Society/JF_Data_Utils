@@ -132,9 +132,10 @@ namespace JF.Utils.Data
         public bool CommitTransaction()
         {
             if (_currentTransaction == null) return false;
+            int changes;
             try
             {
-                SaveChanges();
+                changes = SaveChanges();
                 _currentTransaction.Commit();
                 _currentTransaction.Dispose();
                 _currentTransaction = null!;
@@ -144,7 +145,7 @@ namespace JF.Utils.Data
                 RollbackTransaction();
                 return false;
             }
-            return true;
+            return changes>0;
         }
 
         public async Task<bool> CommitTransactionAsync()

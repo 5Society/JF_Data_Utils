@@ -16,25 +16,17 @@ namespace API_JF_Data_Utils_Example.Core.Services
         }
         public bool AddSalon(Salon salon)
         {
-            if (!_salonRepository.ValidateEntityModel(salon)) return false;
-            _salonRepository.Add(salon);
-            return (_salonRepository.UnitOfWork.SaveChanges()) > 0;
+            return _salonRepository.AddAndSave(salon);
         }
 
         public bool DeleteSalon(int id)
         {
-            Salon? entity = _salonRepository.GetById(id);
-
-            if (entity is null) return false;
-
-            _salonRepository.Delete(entity);
-
-            return _salonRepository.UnitOfWork.SaveChanges()>0;
+            return _salonRepository.DeleteAndSave(id);
         }
 
         public IEnumerable<Salon> GetAllSalons(int page, int pagesize)
         {
-            return _salonRepository.GetAll().GetPaged(page, pagesize).GetResults();
+            return _salonRepository.GetAllPaged(page, pagesize);
         }
 
         public Salon? GetSalonById(int id)
@@ -44,10 +36,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
         public bool UpdateSalon(int id, Salon salon)
         {
-            if (id != salon.Id) return false;
-            if (!_salonRepository.ValidateEntityModel(salon)) return false;
-            _salonRepository.Update(salon);
-            return _salonRepository.UnitOfWork.SaveChanges() >0;
+            return _salonRepository.UpdateAndSave(id, salon);
         }
 
         
