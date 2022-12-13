@@ -1,4 +1,5 @@
 ﻿using JF.Utils.Data.Interfaces;
+using System.Reflection;
 
 namespace JF.Utils.Data
 {
@@ -13,8 +14,18 @@ namespace JF.Utils.Data
             return _entities.Add(entity).Entity;
         }
 
-        public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual bool AddAndSave(TEntity entity)
         {
+            if (!ValidateEntityModel(entity)) return false;
+            UnitOfWork.BeginTransaction();
+            Add(entity);
+            //return  (UnitOfWork.SaveChanges()) > 0;
+            return UnitOfWork.CommitTransaction();
+        }
+
+        public virtual async Task<TEntity?> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            if (!ValidateEntityModel(entity)) return null;
             _entities.Add(entity);
             await _context.SaveChangesAsync(cancellationToken);
             return entity;
@@ -36,6 +47,19 @@ namespace JF.Utils.Data
         {
             _context.Set<TEntity>().Remove(entity);
         }
+
+        public virtual void Delete(int id)
+        {
+            TEntity? entity = GetById(id);
+            if (entity != null) Delete(entity);
+
+        }
+        public virtual bool DeleteAndSave(int id)
+        {
+            Delete(id);
+            return UnitOfWork.SaveChanges() > 0;
+        }
+
 
         public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
@@ -59,6 +83,18 @@ namespace JF.Utils.Data
             _entities.Update(entity);
         }
 
+        public virtual bool UpdateAndSave(int id, TEntity entity)
+        {
+            //Validate id entity
+            PropertyInfo? fieldId = entity.GetType().GetProperties().Where(f => f.Name == "Id").FirstOrDefault();
+            if (fieldId == null) throw new ArgumentException("Property Id cannot exists. You must implement this function");
+            if (id != ((int)fieldId.GetValue(entity)!)) return false;
+            //Validate model entity
+            if (!ValidateEntityModel(entity)) return false;
+            //Updates entity
+            Update(entity);
+            return UnitOfWork.SaveChanges() > 0;
+        }
         public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             _entities.Update(entity);
