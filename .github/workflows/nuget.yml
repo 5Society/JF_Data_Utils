@@ -3,9 +3,9 @@ name: "Deploy to NuGet"
 on:
   push:
     branches: 
-      - realease/*
+      - main
     tags:
-    - 'v*'
+      - 'v*'
 
 env:
   PROJECT_PATH: 'JF_Data_Utils/JF_Data_Utils/JF_Data_Utils.csproj'
