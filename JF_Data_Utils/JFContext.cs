@@ -11,8 +11,8 @@ namespace JF.Utils.Data
     {
         private readonly string? _username;
 
-        private Dictionary<string, dynamic> _repositoriesBase;
-        private Dictionary<string, dynamic> _repositoriesRead;
+        private Dictionary<string, dynamic> _repositoriesBase = new Dictionary<string, dynamic>();
+        private Dictionary<string, dynamic> _repositoriesRead = new Dictionary<string, dynamic>();
 
         private IDbContextTransaction? _currentTransaction;
         public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
@@ -20,15 +20,11 @@ namespace JF.Utils.Data
         public JFContext(DbContextOptions<JFContext> options, string username) : base(options)
         {
             _username = username;
-            _repositoriesBase = new Dictionary<string, dynamic>();
-            _repositoriesRead = new Dictionary<string, dynamic>();
         }
 
         public JFContext(DbContextOptions<JFContext> options) : base(options)
         {
             _username = "Generic";
-            _repositoriesBase = new Dictionary<string, dynamic>();
-            _repositoriesRead = new Dictionary<string, dynamic>();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -197,7 +193,7 @@ namespace JF.Utils.Data
         public IRepositoryBase<TEntity>? Repository<TEntity>() where TEntity : class
         {
             var type = typeof(TEntity).Name;
-            if (_repositoriesBase.ContainsKey(type)) return _repositoriesBase[type];
+            if (_repositoriesBase.TryGetValue(type, out var repository)) return repository;
             if (_repositoriesRead.ContainsKey(type)) return null;
             _repositoriesBase.Add(type, new JFRepositoryBase<TEntity>(this));
             return _repositoriesBase[type];
@@ -206,8 +202,8 @@ namespace JF.Utils.Data
         public IReadRepositoryBase<TEntity>? ReadRepository<TEntity>() where TEntity : class
         {
             var type = typeof(TEntity).Name;
-            if (_repositoriesBase.ContainsKey(type)) return (IReadRepositoryBase<TEntity>)_repositoriesBase[type];
-            if (_repositoriesRead.ContainsKey(type)) return _repositoriesRead[type];
+            if (_repositoriesBase.TryGetValue(type, out var repository)) return (IReadRepositoryBase<TEntity>)repository;
+            if (_repositoriesRead.TryGetValue(type, out var repositoryRead)) return repositoryRead;
             _repositoriesRead.Add(type, new JFRepositoryBase<TEntity>(this));
             return _repositoriesRead[type];
         }
