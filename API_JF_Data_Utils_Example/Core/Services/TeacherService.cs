@@ -2,16 +2,17 @@
 using API_JF_Data_Utils_Example.Core.Models;
 using API_JF_Data_Utils_Example.DataAccess.Interfaces;
 using JF.Utils.Data.Extensions;
+using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class TeacherService : ITeacherService
     {
-        private readonly ITeacherRepository _teacherRepository;
+        private readonly IRepositoryBase<Teacher> _teacherRepository;
 
-        public TeacherService(ITeacherRepository teacherRepository)
+        public TeacherService(IUnitOfWork context)
         { 
-            _teacherRepository = teacherRepository;
+            _teacherRepository = context.Repository<Teacher>()!;
         }
         public bool AddTeacher(Teacher teacher)
         {
