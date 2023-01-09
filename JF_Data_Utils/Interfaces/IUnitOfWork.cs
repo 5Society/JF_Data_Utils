@@ -20,5 +20,9 @@ namespace JF.Utils.Data.Interfaces
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
         int SaveChanges();
 
+        void AddRepository<TEntity>(object repository);
+        IRepositoryBase<TEntity>? Repository<TEntity>() where TEntity : class;
+        IReadRepositoryBase<TEntity>? ReadRepository<TEntity>() where TEntity : class;
+
     }
 }

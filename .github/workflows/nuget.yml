@@ -2,13 +2,11 @@ name: "Deploy to NuGet"
 
 on:
   push:
-    branches: 
-      - realease/*
     tags:
-    - 'v*'
+      - 'v*'
 
 env:
-  PROJECT_PATH: 'JF_Data_Utils/JF_Data_Utils/JF_Data_Utils.csproj'
+  PROJECT_PATH: 'JF_Data_Utils/JF_Data_Utils.csproj'
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
