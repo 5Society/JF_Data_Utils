@@ -2,16 +2,17 @@
 using API_JF_Data_Utils_Example.Core.Models;
 using API_JF_Data_Utils_Example.DataAccess.Interfaces;
 using JF.Utils.Data.Extensions;
+using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly IRepositoryBase<Student> _studentRepository;
 
-        public StudentService(IStudentRepository studentRepository)
+        public StudentService(IUnitOfWork context)
         { 
-            _studentRepository = studentRepository;
+            _studentRepository = context.Repository<Student>()!; 
         }
         public async Task<bool> AddStudent(Student student)
         {
