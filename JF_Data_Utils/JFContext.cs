@@ -11,8 +11,9 @@ namespace JF.Utils.Data
     {
         private readonly string? _username;
 
-        private Dictionary<string, dynamic> _repositoriesBase = new Dictionary<string, dynamic>();
-        private Dictionary<string, dynamic> _repositoriesRead = new Dictionary<string, dynamic>();
+        private readonly Dictionary<string, dynamic> _repositoriesBase = new Dictionary<string, dynamic>();
+
+        private readonly Dictionary<string, dynamic> _repositoriesRead = new Dictionary<string, dynamic>();
 
         private IDbContextTransaction? _currentTransaction;
         public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
