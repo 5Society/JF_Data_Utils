@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace TestProject.Services
 {
-    public class Test_Salon
+    public class TestSalon
     {
         private SalonService _service;
 
