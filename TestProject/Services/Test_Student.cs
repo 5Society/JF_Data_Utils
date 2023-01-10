@@ -7,15 +7,14 @@ using System.Xml.Linq;
 
 namespace TestProject.Services
 {
-    public class Test_Student
+    public class TestStudent
     {
         private StudentService _service;
 
         [SetUp]
         public void Setup()
         {
-            StudentRepository repository = new StudentRepository(InitialSetup.GetAppContext);
-            _service = new StudentService(repository);
+            _service = new StudentService(InitialSetup.GetAppContext);
         }
 
         [TestCase("lastName", "name", true)]

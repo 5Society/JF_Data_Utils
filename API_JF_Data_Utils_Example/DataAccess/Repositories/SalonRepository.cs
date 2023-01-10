@@ -15,7 +15,7 @@ namespace API_JF_Data_Utils_Example.DataAccess.Repositories
         {
             if (salon.TeacherId != null)
             {
-                TeacherRepository tr = new TeacherRepository(UnitOfWork);
+                IReadRepositoryBase<Teacher> tr = UnitOfWork.ReadRepository<Teacher>()!;
                 Teacher? t = tr.GetById(salon.TeacherId.Value);
                 if (t == null) return false;
             }

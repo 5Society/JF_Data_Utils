@@ -11,6 +11,10 @@ namespace JF.Utils.Data
     {
         private readonly string? _username;
 
+        private readonly Dictionary<string, dynamic> _repositoriesBase = new Dictionary<string, dynamic>();
+
+        private readonly Dictionary<string, dynamic> _repositoriesRead = new Dictionary<string, dynamic>();
+
         private IDbContextTransaction? _currentTransaction;
         public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
         public bool HasActiveTransaction => _currentTransaction != null;
@@ -185,6 +189,31 @@ namespace JF.Utils.Data
                     _currentTransaction = null!;
                 }
             }
+        }
+
+        public IRepositoryBase<TEntity>? Repository<TEntity>() where TEntity : class
+        {
+            var type = typeof(TEntity).Name;
+            if (_repositoriesBase.TryGetValue(type, out var repository)) return repository;
+            if (_repositoriesRead.ContainsKey(type)) return null;
+            _repositoriesBase.Add(type, new JFRepositoryBase<TEntity>(this));
+            return _repositoriesBase[type];
+        }
+
+        public IReadRepositoryBase<TEntity>? ReadRepository<TEntity>() where TEntity : class
+        {
+            var type = typeof(TEntity).Name;
+            if (_repositoriesBase.TryGetValue(type, out var repository)) return (IReadRepositoryBase<TEntity>)repository;
+            if (_repositoriesRead.TryGetValue(type, out var repositoryRead)) return repositoryRead;
+            _repositoriesRead.Add(type, new JFRepositoryBase<TEntity>(this));
+            return _repositoriesRead[type];
+        }
+
+        public void AddRepository<TEntity>(object repository)
+        {
+            var type = typeof(TEntity).Name;
+            if (_repositoriesBase.ContainsKey(type)) throw new InvalidOperationException("Repository already exists");
+            _repositoriesBase.Add(type, repository);
         }
     }
 }
