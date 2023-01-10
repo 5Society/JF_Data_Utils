@@ -11,8 +11,9 @@ namespace API_JF_Data_Utils_Example.Core.Services
         private readonly ISalonRepository _salonRepository;
 
         public SalonService(ISalonRepository salonRepository)
-        { 
-            _salonRepository = salonRepository;
+        {
+            salonRepository.UnitOfWork.AddRepository<Salon>(salonRepository);
+            _salonRepository = (ISalonRepository)salonRepository.UnitOfWork.Repository<Salon>()!;
         }
         public bool AddSalon(Salon salon)
         {
