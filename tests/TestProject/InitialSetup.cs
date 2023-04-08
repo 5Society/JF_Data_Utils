@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TestProject
 {
     [SetUpFixture]
-    internal class InitialSetup
+    internal sealed class InitialSetup
     {
         internal static ApplicationContext GetAppContext
         {
