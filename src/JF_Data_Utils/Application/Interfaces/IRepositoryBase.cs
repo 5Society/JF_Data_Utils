@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace JF.Utils.Data.Interfaces
+namespace JF.Utils.Data.Application.Repositories
 {
     public interface IRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
     {

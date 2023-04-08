@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JF.Utils.Data.Interfaces
+namespace JF.Utils.Data.Application.Repositories
 {
     public interface IReadRepositoryBase<TEntity> where TEntity : class
     {

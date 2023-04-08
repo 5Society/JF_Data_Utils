@@ -1,12 +1,12 @@
-﻿using JF.Utils.Data.Domain.Entities;
-using JF.Utils.Data.Extensions;
-using JF.Utils.Data.Interfaces;
+﻿using JF.Utils.Data.Application.Repositories;
+using JF.Utils.Data.Domain.Entities;
+using JF.Utils.Data.Utilites.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
 
-namespace JF.Utils.Data
+namespace JF.Utils.Data.Infrastructure.Persistence
 {
     public class JFContext : DbContext, IUnitOfWork
     {
@@ -31,7 +31,7 @@ namespace JF.Utils.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => e.DeletedDate==null);
+            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => e.DeletedDate == null);
             base.OnModelCreating(modelBuilder);
         }
 
@@ -46,10 +46,10 @@ namespace JF.Utils.Data
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
-            => await SaveChangesAsync(acceptAllChangesOnSuccess:true, cancellationToken);
-        
-      
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+            => await SaveChangesAsync(acceptAllChangesOnSuccess: true, cancellationToken);
+
+
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             ValidateUpdateEntities();
@@ -107,7 +107,7 @@ namespace JF.Utils.Data
         private void ValidateModelEntity()
         {
             //Load references
-            foreach (var entry in ChangeTracker.Entries().Where(e => (e.State == EntityState.Added) || (e.State == EntityState.Modified)))
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
                 foreach (var reference in entry.References)
                     reference.Load();
             //Validates entity's model
@@ -150,7 +150,7 @@ namespace JF.Utils.Data
                 RollbackTransaction();
                 return false;
             }
-            return changes>0;
+            return changes > 0;
         }
 
         public async Task<bool> CommitTransactionAsync()

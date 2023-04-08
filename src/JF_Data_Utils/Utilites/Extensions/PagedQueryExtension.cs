@@ -1,11 +1,6 @@
-﻿using JF.Utils.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JF.Utils.Data.Utilites.Common;
 
-namespace JF.Utils.Data.Extensions
+namespace JF.Utils.Data.Utilites.Extensions
 {
     /// <summary>
     /// Extension method for IQueryable<T> that returns one page of results set.
