@@ -21,7 +21,7 @@ namespace TestProject.Services
         [TestCase("Asignature 1", "This is a test asignature", true)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddCourse_Ok(string name, string summary, bool resultExpexted)
+        public void AddCourseOk(string name, string summary, bool resultExpexted)
         {
             Course course = new Course() { Name = name, Summary = summary};
             bool result = _service.AddCourse(course);
@@ -43,7 +43,7 @@ namespace TestProject.Services
         [TestCase("name", null)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddCourse_Exception(string name, string summary)
+        public void AddCourseException(string name, string summary)
         {
             Course course = new Course(){ Name = name, Summary = summary};
             Assert.That(() => _service.AddCourse(course), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
@@ -78,7 +78,7 @@ namespace TestProject.Services
         [TestCase(10, 10, "Name1 ", "summary 1", false)]
         [TestCase(20, 20, "test 1", "test 2", false)]
         [Test, Order(2)]
-        public void UpdateCourse_OK(int id, int courseId, string name, string summary, bool resultExpexted)
+        public void UpdateCourseOK(int id, int courseId, string name, string summary, bool resultExpexted)
         {
             Course course = new Course() { Id = courseId, Name = name, Summary = summary };
             bool result = _service.UpdateCourse(id, course);
@@ -99,7 +99,7 @@ namespace TestProject.Services
         [TestCase(1, 1, "lastName1 ", null)]
         [TestCase(2, 2, null, "Pepito 2")]
         [Test, Order(2)]
-        public void UpdateCourse_Exception(int id, int courseId, string name, string summary)
+        public void UpdateCourseException(int id, int courseId, string name, string summary)
         {
             Course course = new Course() { Id = courseId, Name = name, Summary = summary };
             Assert.That(() => _service.UpdateCourse(id, course), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
