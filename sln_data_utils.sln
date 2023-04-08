@@ -5,9 +5,13 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_JF_Data_Utils_Example", "API_JF_Data_Utils_Example\API_JF_Data_Utils_Example.csproj", "{63B3EB5E-F64B-44DC-8BE7-D74BB7B48820}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF_Data_Utils", "JF_Data_Utils\JF_Data_Utils.csproj", "{AD371742-A861-44EE-A78D-5F57FF1B6DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF_Data_Utils", "src\JF_Data_Utils\JF_Data_Utils.csproj", "{AD371742-A861-44EE-A78D-5F57FF1B6DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{34628958-E8F4-43F2-BECD-CB9339D0470B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "tests\TestProject\TestProject.csproj", "{34628958-E8F4-43F2-BECD-CB9339D0470B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{276B374F-2E90-4DED-A675-1D20E2B540ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F07E0B10-050A-4EE1-994B-90217D72C7E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +34,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD371742-A861-44EE-A78D-5F57FF1B6DF8} = {276B374F-2E90-4DED-A675-1D20E2B540ED}
+		{34628958-E8F4-43F2-BECD-CB9339D0470B} = {F07E0B10-050A-4EE1-994B-90217D72C7E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D062E473-178A-45DD-A6BD-CF30A62AC286}
