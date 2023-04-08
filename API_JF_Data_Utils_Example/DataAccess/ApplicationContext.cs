@@ -1,5 +1,5 @@
 ﻿using API_JF_Data_Utils_Example.Core.Models;
-using JF.Utils.Data;
+using JF.Utils.Data.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace API_JF_Data_Utils_Example.DataAccess

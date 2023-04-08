@@ -1,7 +1,7 @@
-﻿using JF.Utils.Data.Interfaces;
+﻿
 using System.Reflection;
 
-namespace JF.Utils.Data
+namespace JF.Utils.Data.Application.Repositories
 {
     public class JFRepositoryBase<TEntity> : JFReadRepositoryBase<TEntity>, IRepositoryBase<TEntity> where TEntity : class
     {
@@ -88,7 +88,7 @@ namespace JF.Utils.Data
             //Validate id entity
             PropertyInfo? fieldId = entity.GetType().GetProperties().FirstOrDefault(f => f.Name == "Id");
             if (fieldId == null) throw new ArgumentException("Property Id cannot exists. You must implement this function");
-            if (id != ((int)fieldId.GetValue(entity)!)) return false;
+            if (id != (int)fieldId.GetValue(entity)!) return false;
             //Validate model entity
             if (!ValidateEntityModel(entity)) return false;
             UnitOfWork.BeginTransaction();

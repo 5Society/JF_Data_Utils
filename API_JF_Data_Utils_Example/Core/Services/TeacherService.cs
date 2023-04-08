@@ -1,8 +1,6 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using API_JF_Data_Utils_Example.DataAccess.Interfaces;
-using JF.Utils.Data.Extensions;
-using JF.Utils.Data.Interfaces;
+using JF.Utils.Data.Application.Repositories;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
@@ -33,7 +31,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
         public IEnumerable<Teacher> GetAllTeachers(int page, int pagesize)
         {
-            return _teacherRepository.GetAll().GetPaged(page, pagesize).GetResults();
+            return _teacherRepository.GetAllPaged(page, pagesize);
         }
 
         public Teacher? GetTeacherById(int id)

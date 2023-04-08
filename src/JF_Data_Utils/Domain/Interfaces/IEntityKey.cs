@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JF.Utils.Data.Interfaces
+namespace JF.Utils.Data.Domain.Entities
 {
     public interface IEntityKey
     {

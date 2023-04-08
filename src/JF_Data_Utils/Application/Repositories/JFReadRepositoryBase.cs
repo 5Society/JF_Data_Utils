@@ -1,5 +1,5 @@
-﻿using JF.Utils.Data.Extensions;
-using JF.Utils.Data.Interfaces;
+﻿using JF.Utils.Data.Infrastructure.Persistence;
+using JF.Utils.Data.Utilites.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,21 +8,21 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JF.Utils.Data
+namespace JF.Utils.Data.Application.Repositories
 {
     public class JFReadRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
     {
         protected readonly DbSet<TEntity> _entities;
         protected readonly JFContext _context;
         public IUnitOfWork UnitOfWork { get { return _context; } }
-        
+
 
         public JFReadRepositoryBase(IUnitOfWork context)
         {
             _context = (JFContext)(context ?? throw new ArgumentNullException(nameof(context)));
             _entities = _context.Set<TEntity>();
         }
-        
+
 
         public virtual async Task<bool> AnyAsync(CancellationToken cancellationToken = default)
         {
@@ -46,7 +46,7 @@ namespace JF.Utils.Data
 
         public virtual IQueryable<TEntity> GetAll(bool asNoTracking = true)
         {
-            return asNoTracking ? _entities.AsNoTracking() 
+            return asNoTracking ? _entities.AsNoTracking()
                 : _entities.AsQueryable();
         }
 
@@ -57,7 +57,7 @@ namespace JF.Utils.Data
         public virtual IQueryable<TEntity> GetAllBySpec(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true)
         {
             return asNoTracking ? _entities.Where(predicate).AsNoTracking()
-                :_entities.Where(predicate).AsQueryable();
+                : _entities.Where(predicate).AsQueryable();
         }
 
         public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
@@ -75,7 +75,7 @@ namespace JF.Utils.Data
         {
             return await _entities.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
         }
-        
+
         public virtual TEntity? GetById<TId>(TId id) where TId : notnull
         {
             return _entities.Find(new object[] { id });
@@ -96,6 +96,6 @@ namespace JF.Utils.Data
             return await _entities.Where(predicate).ToListAsync(cancellationToken);
         }
 
-     
+
     }
 }

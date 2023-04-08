@@ -5,10 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace JF.Utils.Data
+namespace JF.Utils.Data.Domain.Entities
 {
     public class EntitySoftDelete : IEntitySoftDelete
     {
