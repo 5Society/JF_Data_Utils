@@ -1,5 +1,4 @@
-﻿using JF.Utils.Data.Interfaces;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JF.Utils.Data
+namespace JF.Utils.Data.Domain.Entities
 {
     public class EntityAuditableSoftDelete : EntityAuditable, IEntitySoftDelete
     {
@@ -19,5 +18,5 @@ namespace JF.Utils.Data
         public string? DeletedBy { get; set; }
         [NotMapped]
         public bool IsDeleted => DeletedDate != null;
-}
+    }
 }

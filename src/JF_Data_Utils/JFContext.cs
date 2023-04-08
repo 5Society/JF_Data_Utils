@@ -1,4 +1,5 @@
-﻿using JF.Utils.Data.Extensions;
+﻿using JF.Utils.Data.Domain.Entities;
+using JF.Utils.Data.Extensions;
 using JF.Utils.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
