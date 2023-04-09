@@ -1,7 +1,10 @@
 ﻿
-namespace JF.Utils.Data.Utilites.Common
+using JF.Utils.Application.Common;
+
+namespace JF.Utils.Infrastructure.Common
 {
-    public class JFPagedResult<TEntity> : IPagedResult<TEntity> where TEntity : class
+    public class JFPagedResult<TEntity> : IPagedResult<TEntity> 
+        where TEntity : class
     {
         public IQueryable<TEntity> Query { get; internal set; }
         public int CurrentPage { get; internal set; }

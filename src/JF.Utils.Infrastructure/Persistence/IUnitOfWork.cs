@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace JF.Utils.Data.Application.Repositories
+
+namespace JF.Utils.Infrastructure.Persistence
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -21,8 +17,8 @@ namespace JF.Utils.Data.Application.Repositories
         int SaveChanges();
 
         void AddRepository<TEntity>(object repository);
-        IRepositoryBase<TEntity>? Repository<TEntity>() where TEntity : class;
-        IReadRepositoryBase<TEntity>? ReadRepository<TEntity>() where TEntity : class;
+        IRepository<TEntity>? Repository<TEntity>() where TEntity : class;
+        IReadRepository<TEntity>? ReadRepository<TEntity>() where TEntity : class;
 
     }
 }

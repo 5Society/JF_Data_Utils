@@ -1,12 +1,11 @@
-﻿using JF.Utils.Data.Application.Repositories;
-using JF.Utils.Domain.Entities;
-using JF.Utils.Data.Utilites.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
+using JF.Utils.Domain.Entities;
+using JF.Utils.Infrastructure.Extensions;
 
-namespace JF.Utils.Data.Infrastructure.Persistence
+namespace JF.Utils.Infrastructure.Persistence
 {
     public class JFContext : DbContext, IUnitOfWork
     {
@@ -192,21 +191,21 @@ namespace JF.Utils.Data.Infrastructure.Persistence
             }
         }
 
-        public IRepositoryBase<TEntity>? Repository<TEntity>() where TEntity : class
+        public IRepository<TEntity>? Repository<TEntity>() where TEntity : class
         {
             var type = typeof(TEntity).Name;
             if (_repositoriesBase.TryGetValue(type, out var repository)) return repository;
             if (_repositoriesRead.ContainsKey(type)) return null;
-            _repositoriesBase.Add(type, new JFRepositoryBase<TEntity>(this));
+            _repositoriesBase.Add(type, new JFRepository<TEntity>(this));
             return _repositoriesBase[type];
         }
 
-        public IReadRepositoryBase<TEntity>? ReadRepository<TEntity>() where TEntity : class
+        public IReadRepository<TEntity>? ReadRepository<TEntity>() where TEntity : class
         {
             var type = typeof(TEntity).Name;
-            if (_repositoriesBase.TryGetValue(type, out var repository)) return (IReadRepositoryBase<TEntity>)repository;
+            if (_repositoriesBase.TryGetValue(type, out var repository)) return (IReadRepository<TEntity>)repository;
             if (_repositoriesRead.TryGetValue(type, out var repositoryRead)) return repositoryRead;
-            _repositoriesRead.Add(type, new JFRepositoryBase<TEntity>(this));
+            _repositoriesRead.Add(type, new JFRepository<TEntity>(this));
             return _repositoriesRead[type];
         }
 

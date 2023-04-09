@@ -1,10 +1,10 @@
 ﻿using API_JF_Data_Utils_Example.Core.Models;
 using API_JF_Data_Utils_Example.DataAccess.Interfaces;
-using JF.Utils.Data.Application.Repositories;
+using JF.Utils.Infrastructure.Persistence;
 
 namespace API_JF_Data_Utils_Example.DataAccess.Repositories
 {
-    public class SalonRepository : JFRepositoryBase<Salon>, ISalonRepository
+    public class SalonRepository : JFRepository<Salon>, ISalonRepository
     {
         public SalonRepository(IUnitOfWork context) : base(context)
         {
@@ -14,7 +14,7 @@ namespace API_JF_Data_Utils_Example.DataAccess.Repositories
         {
             if (salon.TeacherId != null)
             {
-                IReadRepositoryBase<Teacher> tr = UnitOfWork.ReadRepository<Teacher>()!;
+                IReadRepository<Teacher> tr = UnitOfWork.ReadRepository<Teacher>()!;
                 Teacher? t = tr.GetById(salon.TeacherId.Value);
                 if (t == null) return false;
             }

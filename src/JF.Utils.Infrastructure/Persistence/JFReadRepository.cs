@@ -1,23 +1,17 @@
-﻿using JF.Utils.Data.Infrastructure.Persistence;
-using JF.Utils.Data.Utilites.Extensions;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using JF.Utils.Infrastructure.Extensions;
 
-namespace JF.Utils.Data.Application.Repositories
+namespace JF.Utils.Infrastructure.Persistence
 {
-    public class JFReadRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
+    public class JFReadRepository<TEntity> : IReadRepository<TEntity> where TEntity : class
     {
         protected readonly DbSet<TEntity> _entities;
         protected readonly JFContext _context;
         public IUnitOfWork UnitOfWork { get { return _context; } }
 
 
-        public JFReadRepositoryBase(IUnitOfWork context)
+        public JFReadRepository(IUnitOfWork context)
         {
             _context = (JFContext)(context ?? throw new ArgumentNullException(nameof(context)));
             _entities = _context.Set<TEntity>();

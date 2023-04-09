@@ -1,12 +1,12 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using JF.Utils.Data.Application.Repositories;
+using JF.Utils.Infrastructure.Persistence;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class TeacherService : ITeacherService
     {
-        private readonly IRepositoryBase<Teacher> _teacherRepository;
+        private readonly IRepository<Teacher> _teacherRepository;
 
         public TeacherService(IUnitOfWork context)
         { 

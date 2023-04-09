@@ -1,13 +1,17 @@
-﻿using JF.Utils.Data.Utilites.Common;
+﻿
 
-namespace JF.Utils.Data.Utilites.Extensions
+using JF.Utils.Application.Common;
+using JF.Utils.Infrastructure.Common;
+
+namespace JF.Utils.Infrastructure.Extensions
 {
     /// <summary>
     /// Extension method for IQueryable<T> that returns one page of results set.
     /// </summary>
     public static class PagedQueryExtension
     {
-        public static JFPagedResult<T> GetPaged<T>(this IQueryable<T> query, int page, int pageSize) where T : class
+        public static IPagedResult<T> GetPaged<T>(this IQueryable<T> query, int page, int pageSize) 
+            where T : class
         {
             var result = new JFPagedResult<T>(query);
             result.CurrentPage = page;

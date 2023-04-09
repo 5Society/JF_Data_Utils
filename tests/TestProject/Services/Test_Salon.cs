@@ -1,11 +1,4 @@
 
-
-using API_JF_Data_Utils_Example.Core.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-
 namespace TestProject.Services
 {
     public class TestSalon

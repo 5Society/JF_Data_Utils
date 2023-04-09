@@ -1,12 +1,12 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using JF.Utils.Data.Application.Repositories;
+using JF.Utils.Infrastructure.Persistence;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IRepositoryBase<Student> _studentRepository;
+        private readonly IRepository<Student> _studentRepository;
 
         public StudentService(IUnitOfWork context)
         { 

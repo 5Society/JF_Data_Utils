@@ -1,10 +1,4 @@
 
-
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-
 namespace TestProject.Services
 {
     public class TestTeacher

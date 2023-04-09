@@ -1,11 +1,11 @@
 ﻿
 using System.Reflection;
 
-namespace JF.Utils.Data.Application.Repositories
+namespace JF.Utils.Infrastructure.Persistence
 {
-    public class JFRepositoryBase<TEntity> : JFReadRepositoryBase<TEntity>, IRepositoryBase<TEntity> where TEntity : class
+    public class JFRepository<TEntity> : JFReadRepository<TEntity>, IRepository<TEntity> where TEntity : class
     {
-        public JFRepositoryBase(IUnitOfWork context) : base(context)
+        public JFRepository(IUnitOfWork context) : base(context)
         {
         }
 

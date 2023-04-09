@@ -1,12 +1,12 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using JF.Utils.Data.Application.Repositories;
+using JF.Utils.Infrastructure.Persistence;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class CourseService : ICourseService
     {
-        private readonly IRepositoryBase<Course> _courseRepository;
+        private readonly IRepository<Course> _courseRepository;
 
         public CourseService(IUnitOfWork context)
         {

@@ -1,10 +1,9 @@
 ﻿
 
-namespace JF.Utils.Data.Application.Repositories
+namespace JF.Utils.Application.Persistence
 {
     public interface IRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
     {
-        IUnitOfWork UnitOfWork { get; }
         TEntity Add(TEntity entity);
         bool AddAndSave(TEntity entity);
         Task<TEntity?> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
