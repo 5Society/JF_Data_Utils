@@ -1,4 +1,4 @@
-﻿using JF.Utils.Data.Domain.Entities;
+﻿using JF.Utils.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

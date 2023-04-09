@@ -1,5 +1,5 @@
 ﻿using JF.Utils.Data.Application.Repositories;
-using JF.Utils.Data.Domain.Entities;
+using JF.Utils.Domain.Entities;
 using JF.Utils.Data.Utilites.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

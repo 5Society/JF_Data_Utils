@@ -33,4 +33,8 @@
     <Folder Include="Infrastructure\Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\JF.Utils.Domain\JF.Utils.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

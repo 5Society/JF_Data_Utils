@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\JF_Data_Utils\JF_Data_Utils.csproj" />
+    <ProjectReference Include="..\src\JF.Utils.Data\JF.Utils.Data.csproj" />
   </ItemGroup>
 
 </Project>
