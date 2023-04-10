@@ -9,7 +9,6 @@ namespace JF.Utils.Infrastructure.Persistence
     {
         public IDbContextTransaction? GetCurrentTransaction();
         bool HasActiveTransaction { get; }
-        void DetectChanges();
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task<int> CommitTransactionAsync(CancellationToken cancellationToken = default);
         void RollbackTransaction();

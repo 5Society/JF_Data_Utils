@@ -134,11 +134,6 @@ namespace JF.Utils.Infrastructure.Persistence
             return result;
         }
 
-        public void DetectChanges()
-        {
-            ChangeTracker.DetectChanges();
-        }
-
         public void RollbackTransaction()
         {
             try
