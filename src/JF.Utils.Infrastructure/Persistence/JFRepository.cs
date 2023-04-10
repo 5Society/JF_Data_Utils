@@ -20,7 +20,7 @@ namespace JF.Utils.Infrastructure.Persistence
         {
             await UnitOfWork.BeginTransactionAsync();
             await AddAsync(entity);
-            await UnitOfWork.CommitTransactionAsync();
+            await UnitOfWork.CommitTransactionAsync(cancellationToken);
             return GetById(entity.GetId()!);
         }
         public virtual async Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities)
@@ -67,8 +67,6 @@ namespace JF.Utils.Infrastructure.Persistence
         public virtual bool Update(object id, TEntity entity)
         {
             //Validate id entity
-            //PropertyInfo? fieldId = entity.GetType().GetProperties().FirstOrDefault(f => f.Name == "Id");
-            //if (fieldId == null) throw new ArgumentException("Property Id cannot exists. You must implement this function");
             if (!id.Equals(entity.GetId())) return false;
             //Validate model entity
             if (!ValidateModel(entity)) return false;

@@ -15,7 +15,6 @@ namespace JF.Utils.Application.Persistence
         Task<int> DeleteRangeAndSaveAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default);
         bool Update(object id, TEntity entity);
         Task<int> UpdateAndSaveAsync(object id, TEntity entity, CancellationToken cancellationToken = default);
-        //Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
         bool ValidateModel(TEntity entity);
     }
 }
