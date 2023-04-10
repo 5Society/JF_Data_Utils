@@ -1,11 +1,4 @@
 
-
-using API_JF_Data_Utils_Example.Core.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-
 namespace TestProject.Services
 {
     public class TestSalon
@@ -31,8 +24,8 @@ namespace TestProject.Services
         public void AddSalon(string name, int idCourse, int? idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Name = name, CourseId= idCourse, TeacherId = idTeacher};
-            salon.CourseId = idCourse;
-            bool result = _service.AddSalon(salon);
+            //salon.CourseId = idCourse;
+            bool result = _service.AddSalon(salon).Result;
 
             Assert.Multiple(() =>
             {
@@ -79,15 +72,11 @@ namespace TestProject.Services
         [TestCase(2, 20, "test 1", 1,1, false)]
         [TestCase(10, 10, "Name1 ", 1, 1, false)]
         [TestCase(20, 20, "test 1", 1, 1, false)]
-        [TestCase(1, 1, "Salon 1", 10, 1, false)]
-        [TestCase(2, 2, "", 1, 1, false)]
-        [TestCase(1, 1, "salon 1", 0, 1, false)]
-        [TestCase(2, 2, null, 1, 1, false)]
         [Test, Order(2)]
         public void UpdateSalon(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
-            bool result = _service.UpdateSalon(id, salon);
+            bool result = _service.UpdateSalon(id, salon).Result;
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(resultExpexted));
@@ -98,6 +87,18 @@ namespace TestProject.Services
                     Assert.That(salon.DeletedBy, Is.Null);
                 }
             });
+        }
+
+
+        [TestCase(2, 2, "", 1, 1)]
+        [TestCase(2, 2, null, 1, 1)]
+        [TestCase(1, 1, "Salon 1", 10, 1)]
+        [TestCase(1, 1, "salon 1", 0, 1)]
+        [Test, Order(2)]
+        public void UpdateSalonException(int id, int SalonId, string name, int idCourse, int idTeacher)
+        {
+            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
+            Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [NonParallelizable]
@@ -111,7 +112,7 @@ namespace TestProject.Services
         public void DeleteSalon(int id, bool resultExpexted)
         {
             Salon? salon = _service.GetSalonById(id);
-            bool result = _service.DeleteSalon(id);
+            bool result = _service.DeleteSalon(id).Result;
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(resultExpexted));

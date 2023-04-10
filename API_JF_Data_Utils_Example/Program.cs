@@ -3,8 +3,7 @@ using API_JF_Data_Utils_Example.Core.Services;
 using API_JF_Data_Utils_Example.DataAccess;
 using API_JF_Data_Utils_Example.DataAccess.Interfaces;
 using API_JF_Data_Utils_Example.DataAccess.Repositories;
-using JF.Utils.Data.Application.Repositories;
-using JF.Utils.Data.Infrastructure.Persistence;
+using JF.Utils.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

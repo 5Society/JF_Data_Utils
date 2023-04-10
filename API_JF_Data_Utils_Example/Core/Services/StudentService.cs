@@ -1,12 +1,12 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using JF.Utils.Data.Application.Repositories;
+using JF.Utils.Infrastructure.Persistence;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IRepositoryBase<Student> _studentRepository;
+        private readonly IRepository<Student> _studentRepository;
 
         public StudentService(IUnitOfWork context)
         { 
@@ -14,7 +14,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
         }
         public async Task<bool> AddStudent(Student student)
         {
-            _studentRepository.Add(student);
+            await _studentRepository.AddAsync(student);
             return (await _studentRepository.UnitOfWork.SaveChangesAsync()) > 0;
         }
 
@@ -42,7 +42,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
         public async Task<bool> UpdateStudent(int id, Student student)
         {
             if (id != student.Id) return false;
-            _studentRepository.Update(student);
+            _studentRepository.Update(id, student);
             return await _studentRepository.UnitOfWork.SaveChangesAsync() >0;
 
         }

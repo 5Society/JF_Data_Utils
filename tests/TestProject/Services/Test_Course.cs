@@ -1,10 +1,4 @@
 
-
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-
 namespace TestProject.Services
 {
     public class TestCourse
@@ -24,7 +18,7 @@ namespace TestProject.Services
         public void AddCourseOk(string name, string summary, bool resultExpexted)
         {
             Course course = new Course() { Name = name, Summary = summary};
-            bool result = _service.AddCourse(course);
+            bool result = _service.AddCourse(course).Result;
 
             Assert.Multiple(() =>
             {
@@ -81,7 +75,7 @@ namespace TestProject.Services
         public void UpdateCourseOK(int id, int courseId, string name, string summary, bool resultExpexted)
         {
             Course course = new Course() { Id = courseId, Name = name, Summary = summary };
-            bool result = _service.UpdateCourse(id, course);
+            bool result = _service.UpdateCourse(id, course).Result;
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(resultExpexted));
@@ -116,7 +110,7 @@ namespace TestProject.Services
         public void DeleteCourse(int id, bool resultExpexted)
         {
             Course? course = _service.GetCourseById(id);
-            bool result = _service.DeleteCourse(id);
+            bool result = _service.DeleteCourse(id).Result;
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(resultExpexted));
