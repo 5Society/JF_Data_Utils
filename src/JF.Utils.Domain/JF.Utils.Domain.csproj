@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Using Include="System.Guid">
+      <Alias>DefaultIdType</Alias>
+    </Using>
+  </ItemGroup>
+
 </Project>

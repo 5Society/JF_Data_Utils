@@ -34,17 +34,6 @@ namespace JF.Utils.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
         }
 
-        public override int SaveChanges() => SaveChanges(acceptAllChangesOnSuccess: true);
-
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            ValidateUpdateEntities();
-            UpdateSoftDelete();
-            UpdateAuditable();
-            ValidateModelEntity();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
             => await SaveChangesAsync(acceptAllChangesOnSuccess: true, cancellationToken);
 
@@ -120,12 +109,6 @@ namespace JF.Utils.Infrastructure.Persistence
                 Validator.ValidateObject(entity, validationContext);
             }
         }
-        public IDbContextTransaction BeginTransaction()
-        {
-            if (_currentTransaction != null) return null!;
-            _currentTransaction = Database.BeginTransaction();
-            return _currentTransaction;
-        }
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
             if (_currentTransaction != null) return null!;
@@ -133,31 +116,12 @@ namespace JF.Utils.Infrastructure.Persistence
             return _currentTransaction;
         }
 
-        public bool CommitTransaction()
-        {
-            if (_currentTransaction == null) return false;
-            int changes;
-            try
-            {
-                changes = SaveChanges();
-                _currentTransaction.Commit();
-                _currentTransaction.Dispose();
-                _currentTransaction = null!;
-            }
-            catch
-            {
-                RollbackTransaction();
-                return false;
-            }
-            return changes > 0;
-        }
-
-        public async Task<bool> CommitTransactionAsync()
+        public async Task<bool> CommitTransactionAsync(CancellationToken cancellationToken = default)
         {
             if (_currentTransaction == null) return false;
             try
             {
-                await SaveChangesAsync();
+                await SaveChangesAsync(cancellationToken);
                 _currentTransaction.Commit();
                 _currentTransaction.Dispose();
                 _currentTransaction = null!;

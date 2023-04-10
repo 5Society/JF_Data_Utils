@@ -10,7 +10,7 @@ namespace API_JF_Data_Utils_Example.DataAccess.Repositories
         {
         }
 
-        public override bool ValidateEntityModel(Salon salon)
+        public override bool ValidateModel(Salon salon)
         {
             if (salon.TeacherId != null)
             {

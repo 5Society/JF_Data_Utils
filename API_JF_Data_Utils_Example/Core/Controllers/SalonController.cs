@@ -38,13 +38,13 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Salon> Post([FromBody] Salon entity)
+        public async Task<ActionResult<Salon>> Post([FromBody] Salon entity)
         {
 
             if (entity is null)
                 return BadRequest(ModelState);
 
-            bool result = _salonService.AddSalon(entity);
+            bool result = await _salonService.AddSalon(entity);
 
             if (!result)
                 return BadRequest("Your changes have not been saved.");
@@ -53,7 +53,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Salon entity)
+        public async Task<IActionResult> Put(int id, [FromBody] Salon entity)
         {
             if (entity is null)
                 return BadRequest(ModelState);
@@ -61,7 +61,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             if (id != entity.Id)
                 return BadRequest("Identifier is not valid or Identifiers don't match.");
 
-            bool result = _salonService.UpdateSalon(id, entity);
+            bool result = await _salonService.UpdateSalon(id, entity);
 
             if (!result)
                 return BadRequest("Your changes have not been saved.");
@@ -70,9 +70,9 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            bool result = _salonService.DeleteSalon(id);
+            bool result = await _salonService.DeleteSalon(id);
 
             if (!result) return NotFound($"Entity with Id = {id} not found");
 

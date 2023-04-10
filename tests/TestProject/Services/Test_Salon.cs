@@ -24,8 +24,8 @@ namespace TestProject.Services
         public void AddSalon(string name, int idCourse, int? idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Name = name, CourseId= idCourse, TeacherId = idTeacher};
-            salon.CourseId = idCourse;
-            bool result = _service.AddSalon(salon);
+            //salon.CourseId = idCourse;
+            bool result = _service.AddSalon(salon).Result;
 
             Assert.Multiple(() =>
             {
@@ -80,7 +80,7 @@ namespace TestProject.Services
         public void UpdateSalon(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
             Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
-            bool result = _service.UpdateSalon(id, salon);
+            bool result = _service.UpdateSalon(id, salon).Result;
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(resultExpexted));
@@ -104,7 +104,7 @@ namespace TestProject.Services
         public void DeleteSalon(int id, bool resultExpexted)
         {
             Salon? salon = _service.GetSalonById(id);
-            bool result = _service.DeleteSalon(id);
+            bool result = _service.DeleteSalon(id).Result;
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.EqualTo(resultExpexted));

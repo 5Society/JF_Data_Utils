@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Threading;
 
 
 namespace JF.Utils.Infrastructure.Persistence
@@ -8,14 +9,10 @@ namespace JF.Utils.Infrastructure.Persistence
         public IDbContextTransaction? GetCurrentTransaction();
         bool HasActiveTransaction { get; }
         void DetectChanges();
-        IDbContextTransaction BeginTransaction();
         Task<IDbContextTransaction> BeginTransactionAsync();
-        bool CommitTransaction();
-        Task<bool> CommitTransactionAsync();
+        Task<bool> CommitTransactionAsync(CancellationToken cancellationToken = default);
         void RollbackTransaction();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-        int SaveChanges();
-
         void AddRepository<TEntity>(object repository);
         IRepository<TEntity>? Repository<TEntity>() where TEntity : class;
         IReadRepository<TEntity>? ReadRepository<TEntity>() where TEntity : class;

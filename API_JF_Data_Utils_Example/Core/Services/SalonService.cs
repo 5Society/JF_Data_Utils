@@ -13,14 +13,14 @@ namespace API_JF_Data_Utils_Example.Core.Services
             salonRepository.UnitOfWork.AddRepository<Salon>(salonRepository);
             _salonRepository = (ISalonRepository)salonRepository.UnitOfWork.Repository<Salon>()!;
         }
-        public bool AddSalon(Salon salon)
+        public async Task<bool> AddSalon(Salon salon)
         {
-            return _salonRepository.AddAndSave(salon);
+            return await (_salonRepository.AddAndSaveAsync(salon)) != null;
         }
 
-        public bool DeleteSalon(int id)
+        public async Task<bool> DeleteSalon(int id)
         {
-            return _salonRepository.DeleteAndSave(id);
+            return await _salonRepository.DeleteAndSaveAsync(id);
         }
 
         public IEnumerable<Salon> GetAllSalons(int page, int pagesize)
@@ -33,9 +33,9 @@ namespace API_JF_Data_Utils_Example.Core.Services
             return _salonRepository.GetById(id);
         }
 
-        public bool UpdateSalon(int id, Salon salon)
+        public async Task<bool> UpdateSalon(int id, Salon salon)
         {
-            return _salonRepository.UpdateAndSave(id, salon);
+            return (await _salonRepository.UpdateAndSaveAsync(id, salon))>0;
         }
 
         

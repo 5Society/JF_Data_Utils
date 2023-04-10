@@ -1,5 +1,7 @@
 ﻿
+using JF.Utils.Application.Persistence;
 using System.Reflection;
+using System.Threading;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
@@ -8,43 +10,34 @@ namespace JF.Utils.Infrastructure.Persistence
         public JFRepository(IUnitOfWork context) : base(context)
         {
         }
-
-        public virtual TEntity Add(TEntity entity)
+        public virtual async Task<TEntity?> AddAsync(TEntity entity)
         {
-            return _entities.Add(entity).Entity;
-        }
-
-        public virtual bool AddAndSave(TEntity entity)
-        {
-            if (!ValidateEntityModel(entity)) return false;
-            UnitOfWork.BeginTransaction();
-            Add(entity);
-            return UnitOfWork.CommitTransaction();
-        }
-
-        public virtual async Task<TEntity?> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
-        {
-            if (!ValidateEntityModel(entity)) return null;
-            _entities.Add(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            if (!ValidateModel(entity)) return null;
+            await _entities.AddAsync(entity);
             return entity;
         }
-
-        public virtual ICollection<TEntity> AddRange(ICollection<TEntity> entities)
+        public virtual async Task<TEntity?> AddAndSaveAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            _entities.AddRange(entities);
+            await UnitOfWork.BeginTransactionAsync();
+            await AddAsync(entity);
+            return (await UnitOfWork.CommitTransactionAsync() ) ? entity : null;
+        }
+        public virtual async Task<ICollection<TEntity>> AddRangeAsync(ICollection<TEntity> entities)
+        {
+            await _entities.AddRangeAsync(entities);
             return entities;
         }
 
-        public virtual async Task<int> AddRangeAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> AddRangeAndSaveAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            await _entities.AddRangeAsync(entities, cancellationToken);
+           
+            await AddRangeAsync(entities);
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
         public virtual void Delete(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            _entities.Remove(entity);
         }
 
         public virtual void Delete(int id)
@@ -53,58 +46,51 @@ namespace JF.Utils.Infrastructure.Persistence
             if (entity != null) Delete(entity);
 
         }
-        public virtual bool DeleteAndSave(int id)
+        public virtual async Task<bool> DeleteAndSaveAsync(int id, CancellationToken cancellationToken = default)
         {
-            UnitOfWork.BeginTransaction();
+            await UnitOfWork.BeginTransactionAsync();
             Delete(id);
-            return UnitOfWork.CommitTransaction();
-        }
-
-
-        public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
-        {
-            _entities.Remove(entity);
-            return await _context.SaveChangesAsync(cancellationToken);
+            return await UnitOfWork.CommitTransactionAsync(cancellationToken);
         }
 
         public virtual void DeleteRange(ICollection<TEntity> entities)
         {
             _entities.RemoveRange(entities);
         }
-
-        public virtual async Task<int> DeleteRangeAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteRangeAndSaveAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            _entities.RemoveRange(entities);
+            DeleteRange(entities);
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public virtual void Update(TEntity entity)
-        {
-            _entities.Update(entity);
-        }
-
-        public virtual bool UpdateAndSave(int id, TEntity entity)
+        public virtual bool Update(int id, TEntity entity)
         {
             //Validate id entity
             PropertyInfo? fieldId = entity.GetType().GetProperties().FirstOrDefault(f => f.Name == "Id");
             if (fieldId == null) throw new ArgumentException("Property Id cannot exists. You must implement this function");
             if (id != (int)fieldId.GetValue(entity)!) return false;
             //Validate model entity
-            if (!ValidateEntityModel(entity)) return false;
-            UnitOfWork.BeginTransaction();
-            //Updates entity
-            Update(entity);
-            return UnitOfWork.CommitTransaction();
-        }
-        public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
-        {
+            if (!ValidateModel(entity)) return false;
             _entities.Update(entity);
-            return await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        public virtual bool ValidateEntityModel(TEntity entity)
-        {
             return true;
         }
+
+        public virtual async Task<int> UpdateAndSaveAsync(int id, TEntity entity, CancellationToken cancellationToken = default)
+        {
+            //Updates entity
+            if (!Update(id, entity)) return 0;
+            return await _context.SaveChangesAsync(cancellationToken);
+        }
+        /*
+        public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+           _entities.Update(entity);
+            return await _context.SaveChangesAsync(cancellationToken);
+        }*/
+
+        public virtual bool ValidateModel(TEntity entity) => true;
+
+    
+
     }
 }

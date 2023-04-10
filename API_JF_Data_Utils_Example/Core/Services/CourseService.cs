@@ -12,13 +12,13 @@ namespace API_JF_Data_Utils_Example.Core.Services
         {
             _courseRepository = context.Repository<Course>()!;
         }
-        public bool AddCourse(Course course)
+        public async Task<bool> AddCourse(Course course)
         {
-            _courseRepository.Add(course);
-            return (_courseRepository.UnitOfWork.SaveChanges()) > 0;
+            await _courseRepository.AddAsync(course);
+            return (await _courseRepository.UnitOfWork.SaveChangesAsync()) > 0;
         }
 
-        public bool DeleteCourse(int id)
+        public async Task<bool> DeleteCourse(int id)
         {
             Course? entity = _courseRepository.GetById(id);
 
@@ -26,7 +26,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
             _courseRepository.Delete(entity);
 
-            return _courseRepository.UnitOfWork.SaveChanges()>0;
+            return (await _courseRepository.UnitOfWork.SaveChangesAsync())>0;
         }
 
         public IEnumerable<Course> GetAllCourses(int page, int pagesize)
@@ -39,11 +39,11 @@ namespace API_JF_Data_Utils_Example.Core.Services
             return _courseRepository.GetById(id);
         }
 
-        public bool UpdateCourse(int id, Course course)
+        public async Task<bool> UpdateCourse(int id, Course course)
         {
             if (id != course.Id) return false;
-            _courseRepository.Update(course);
-            return _courseRepository.UnitOfWork.SaveChanges() >0;
+            _courseRepository.Update(id, course);
+            return (await _courseRepository.UnitOfWork.SaveChangesAsync()) >0;
 
         }
     }
