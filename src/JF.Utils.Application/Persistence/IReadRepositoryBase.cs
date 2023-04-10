@@ -11,10 +11,9 @@ namespace JF.Utils.Application.Persistence
 
         IQueryable<TEntity> GetAllBySpec(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true);
 
-        Task<TEntity?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull;
+        Task<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default);
 
-        TEntity? GetById<TId>(TId id) where TId : notnull;
-
+        TEntity? GetById(object id);
         Task<TEntity?> GetBySpecAsync<Spec>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
         Task<ICollection<TEntity>> ListAsync(CancellationToken cancellationToken = default);

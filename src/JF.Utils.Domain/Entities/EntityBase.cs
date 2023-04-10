@@ -10,6 +10,11 @@ namespace JF.Utils.Domain.Entities
     public abstract class EntityBase<TId> : IEntityBase<TId>
     {
         [Key]
-        public TId Id { get; protected set; } = default!;
+        public TId Id { get; set; } = default!;
+
+        public object? GetId()
+        {
+            return Id;
+        }
     }
 }

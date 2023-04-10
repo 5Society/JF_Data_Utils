@@ -72,10 +72,6 @@ namespace TestProject.Services
         [TestCase(2, 20, "test 1", 1,1, false)]
         [TestCase(10, 10, "Name1 ", 1, 1, false)]
         [TestCase(20, 20, "test 1", 1, 1, false)]
-        [TestCase(1, 1, "Salon 1", 10, 1, false)]
-        [TestCase(2, 2, "", 1, 1, false)]
-        [TestCase(1, 1, "salon 1", 0, 1, false)]
-        [TestCase(2, 2, null, 1, 1, false)]
         [Test, Order(2)]
         public void UpdateSalon(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
@@ -91,6 +87,18 @@ namespace TestProject.Services
                     Assert.That(salon.DeletedBy, Is.Null);
                 }
             });
+        }
+
+
+        [TestCase(2, 2, "", 1, 1)]
+        [TestCase(2, 2, null, 1, 1)]
+        [TestCase(1, 1, "Salon 1", 10, 1)]
+        [TestCase(1, 1, "salon 1", 0, 1)]
+        [Test, Order(2)]
+        public void UpdateSalonException(int id, int SalonId, string name, int idCourse, int idTeacher)
+        {
+            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
+            Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
         [NonParallelizable]

@@ -3,7 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JF.Utils.Domain.Entities
 {
-    public class EntityAuditable : IEntityAuditable
+    public abstract class EntityAuditable : EntityAuditable<DefaultIdType>
+    { 
+    }
+    public abstract class EntityAuditable<TId> : EntityBase<TId>, IEntityAuditable
     {
         [Required]
         public DateTime CreatedDate { get; set; } = DateTime.Now;

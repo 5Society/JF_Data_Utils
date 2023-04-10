@@ -4,7 +4,8 @@ using JF.Utils.Infrastructure.Extensions;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
-    public class JFReadRepository<TEntity> : IReadRepository<TEntity> where TEntity : class
+    public class JFReadRepository<TEntity> : IReadRepository<TEntity> 
+        where TEntity : class
     {
         protected readonly DbSet<TEntity> _entities;
         protected readonly JFContext _context;
@@ -65,12 +66,12 @@ namespace JF.Utils.Infrastructure.Persistence
             return queryable;
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull
+        public virtual async Task<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default) 
         {
             return await _entities.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
         }
 
-        public virtual TEntity? GetById<TId>(TId id) where TId : notnull
+        public virtual TEntity? GetById(object id) 
         {
             return _entities.Find(new object[] { id });
         }

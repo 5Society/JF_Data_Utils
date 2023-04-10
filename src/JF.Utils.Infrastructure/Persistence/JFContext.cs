@@ -116,12 +116,13 @@ namespace JF.Utils.Infrastructure.Persistence
             return _currentTransaction;
         }
 
-        public async Task<bool> CommitTransactionAsync(CancellationToken cancellationToken = default)
+        public async Task<int> CommitTransactionAsync(CancellationToken cancellationToken = default)
         {
-            if (_currentTransaction == null) return false;
+            int result = 0;
+            if (_currentTransaction == null) return result;
             try
             {
-                await SaveChangesAsync(cancellationToken);
+                result= await SaveChangesAsync(cancellationToken);
                 _currentTransaction.Commit();
                 _currentTransaction.Dispose();
                 _currentTransaction = null!;
@@ -129,9 +130,8 @@ namespace JF.Utils.Infrastructure.Persistence
             catch
             {
                 RollbackTransaction();
-                return false;
             }
-            return true;
+            return result;
         }
 
         public void DetectChanges()
@@ -155,7 +155,8 @@ namespace JF.Utils.Infrastructure.Persistence
             }
         }
 
-        public IRepository<TEntity>? Repository<TEntity>() where TEntity : class
+        public IRepository<TEntity>? Repository<TEntity>() 
+            where TEntity : class, IAggregateRoot
         {
             var type = typeof(TEntity).Name;
             if (_repositoriesBase.TryGetValue(type, out var repository)) return repository;
@@ -164,7 +165,8 @@ namespace JF.Utils.Infrastructure.Persistence
             return _repositoriesBase[type];
         }
 
-        public IReadRepository<TEntity>? ReadRepository<TEntity>() where TEntity : class
+        public IReadRepository<TEntity>? ReadRepository<TEntity>() 
+            where TEntity : class, IAggregateRoot
         {
             var type = typeof(TEntity).Name;
             if (_repositoriesBase.TryGetValue(type, out var repository)) return (IReadRepository<TEntity>)repository;

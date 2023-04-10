@@ -4,7 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JF.Utils.Domain.Entities
 {
-    public class EntityAuditableSoftDelete : EntityAuditable, IEntitySoftDelete
+    public class EntityAuditableSoftDelete : EntityAuditableSoftDelete<DefaultIdType>
+    {
+
+    }
+    public class EntityAuditableSoftDelete<TId> : EntityAuditable<TId>, IEntitySoftDelete
     {
         public DateTime? DeletedDate { get; set; }
 
