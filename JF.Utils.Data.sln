@@ -23,6 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Domain.Test", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Application.Test", "tests\JF.Utils.Application.Test\JF.Utils.Application.Test.csproj", "{589A4A7D-1F18-43CD-886B-FE41C3B319D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repoItems", "repoItems", "{A78DB4C2-BCA5-4C34-9D83-D98D28C134C2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
