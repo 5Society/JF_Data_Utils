@@ -30,7 +30,7 @@ namespace JF.Utils.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.SetQueryFilterOnAllEntities<IEntitySoftDelete>(e => e.DeletedDate == null);
+            modelBuilder.SetQueryFilterOnAllEntities<ISoftDeleteEntity>(e => e.DeletedDate == null);
             base.OnModelCreating(modelBuilder);
         }
 
@@ -55,7 +55,7 @@ namespace JF.Utils.Infrastructure.Persistence
         }
         private void UpdateSoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntitySoftDelete))))
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(ISoftDeleteEntity))))
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -71,7 +71,7 @@ namespace JF.Utils.Infrastructure.Persistence
         }
         private void UpdateAuditable()
         {
-            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IEntityAuditable))))
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetInterfaces().Contains(typeof(IAuditableEntity))))
             {
                 PropertyValues? databaseValues = entry.GetDatabaseValues();
                 switch (entry.State)

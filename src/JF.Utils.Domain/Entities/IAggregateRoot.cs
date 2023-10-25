@@ -2,10 +2,11 @@
 {
 
     /// <summary>
-    /// Apply this marker interface only to aggregate root entities
-    /// Repositories will only work with aggregate roots, not their children
+    /// Aplica esta interfaz marcadora solo a entidades raíz de agregado.
+    /// Los repositorios solo trabajarán con entidades raíz de agregado, no con sus hijos.
     /// </summary>
-    public interface IAggregateRoot : IEntityBase
+    public interface IAggregateRoot : IEntity
     {
     }
+
 }

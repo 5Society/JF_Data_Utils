@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API_JF_Data_Utils_Example.Core.Models
 {
-    public class Course : EntitySoftDelete<int>, IAggregateRoot
+    public class Course : SoftDeleteEntity<int>, IAggregateRoot
     {
     
         [Required]
