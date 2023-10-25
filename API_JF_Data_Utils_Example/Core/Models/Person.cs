@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API_JF_Data_Utils_Example.Core.Models
 {
-    public abstract class Person :  EntityAuditableSoftDelete<int>, IAggregateRoot
+    public abstract class Person :  AuditableSoftDeleteEntity<int>, IAggregateRoot
     {
         
         [Required]
