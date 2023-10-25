@@ -19,7 +19,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Application", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Infrastructure", "src\JF.Utils.Infrastructure\JF.Utils.Infrastructure.csproj", "{24498843-3550-448E-B88E-9D699A189C36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JF.Utils.Domain.Test", "tests\JF.Utils.Domain.Test\JF.Utils.Domain.Test.csproj", "{F91E7359-9853-4BED-80DC-3D985B1817AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Domain.Test", "tests\JF.Utils.Domain.Test\JF.Utils.Domain.Test.csproj", "{C71ACFA1-3F59-4EE6-8664-F5887A2A6C81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Application.Test", "tests\JF.Utils.Application.Test\JF.Utils.Application.Test.csproj", "{589A4A7D-1F18-43CD-886B-FE41C3B319D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repoItems", "repoItems", "{A78DB4C2-BCA5-4C34-9D83-D98D28C134C2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +60,14 @@ Global
 		{24498843-3550-448E-B88E-9D699A189C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24498843-3550-448E-B88E-9D699A189C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24498843-3550-448E-B88E-9D699A189C36}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F91E7359-9853-4BED-80DC-3D985B1817AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F91E7359-9853-4BED-80DC-3D985B1817AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F91E7359-9853-4BED-80DC-3D985B1817AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F91E7359-9853-4BED-80DC-3D985B1817AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C71ACFA1-3F59-4EE6-8664-F5887A2A6C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71ACFA1-3F59-4EE6-8664-F5887A2A6C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71ACFA1-3F59-4EE6-8664-F5887A2A6C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71ACFA1-3F59-4EE6-8664-F5887A2A6C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{589A4A7D-1F18-43CD-886B-FE41C3B319D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{589A4A7D-1F18-43CD-886B-FE41C3B319D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{589A4A7D-1F18-43CD-886B-FE41C3B319D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{589A4A7D-1F18-43CD-886B-FE41C3B319D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,7 +78,8 @@ Global
 		{230860F2-C704-43BC-BD62-4DD98A296049} = {276B374F-2E90-4DED-A675-1D20E2B540ED}
 		{7C70E459-603B-4D52-AA0F-B0947172934F} = {276B374F-2E90-4DED-A675-1D20E2B540ED}
 		{24498843-3550-448E-B88E-9D699A189C36} = {276B374F-2E90-4DED-A675-1D20E2B540ED}
-		{F91E7359-9853-4BED-80DC-3D985B1817AC} = {F07E0B10-050A-4EE1-994B-90217D72C7E8}
+		{C71ACFA1-3F59-4EE6-8664-F5887A2A6C81} = {F07E0B10-050A-4EE1-994B-90217D72C7E8}
+		{589A4A7D-1F18-43CD-886B-FE41C3B319D6} = {F07E0B10-050A-4EE1-994B-90217D72C7E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D062E473-178A-45DD-A6BD-CF30A62AC286}
