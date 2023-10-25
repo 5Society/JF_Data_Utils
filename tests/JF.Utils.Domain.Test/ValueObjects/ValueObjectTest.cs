@@ -1,4 +1,6 @@
-﻿namespace JF.Utils.Domain.Test.ValueObjects
+﻿using JF.Utils.Domain.ValueObjects;
+
+namespace JF.Utils.Domain.Test.ValueObjects
 {
     public class ValueObjectTest
     {
@@ -23,6 +25,64 @@
             // Arrange
             var obj1 = new SampleValueObject("Test1");
             var obj2 = new SampleValueObject("Test2");
+
+            // Act
+            var result = obj1.Equals(obj2);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_ReturnsFalse_WhenTwoValueObjectsAreNotEqual2()
+        {
+            // Arrange
+            var obj1 = new SampleValueObject("Test1");
+            var obj2 = new SampleValueObject("Test2");
+
+            // Act
+            var result = obj1.NotEquals(obj2);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData(null, "ValorNoNulo")]
+        [InlineData("ValorNoNulo", null)]
+        public void Equals_ReturnsFalse_WhenValueObjectsAreNull(string? str1, string? str2)
+        {
+            // Arrange
+            var obj1 = new SampleValueObject(str1);
+            var obj2 = new SampleValueObject(str2);
+
+            // Act
+            var result = obj1.Equals(obj2);
+
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void Equals_ReturnsFalse_WhenObject2IsNull()
+        {
+            // Arrange
+            var obj1 = new SampleValueObject("Prueba");
+            object? obj2 = null;
+
+            // Act
+            var result = obj1.Equals(obj2);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Equals_ReturnsFalse_WhenTypeIsDifferent()
+        {
+            // Arrange
+            var obj1 = new SampleValueObject("Prueba");
+            var obj2 = "Prueba";
 
             // Act
             var result = obj1.Equals(obj2);
