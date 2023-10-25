@@ -7,7 +7,7 @@ namespace JF.Utils.Domain.Entities
     /// Clase base para todas las entidades
     /// </summary>
     public abstract class BaseEntity : BaseEntity<DefaultIdType>
-    { 
+    {
 
     }
 

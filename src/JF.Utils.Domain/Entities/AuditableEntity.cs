@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JF.Utils.Domain.Entities
 {
@@ -7,7 +7,7 @@ namespace JF.Utils.Domain.Entities
     /// Clase abstracta que representa una entidad auditable con un identificador de tipo DefaultIdType.
     /// </summary>
     public abstract class AuditableEntity : AuditableEntity<DefaultIdType>
-    { 
+    {
     }
 
     /// <summary>
