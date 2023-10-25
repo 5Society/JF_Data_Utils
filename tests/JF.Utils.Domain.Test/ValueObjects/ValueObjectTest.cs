@@ -1,7 +1,4 @@
-﻿
-using JF.Utils.Domain.ValueObjects;
-
-namespace JF.Utils.Domain.Test.ValueObjects
+﻿namespace JF.Utils.Domain.Test.ValueObjects
 {
     public class ValueObjectTest
     {
