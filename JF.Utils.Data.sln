@@ -15,9 +15,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F07E0B10
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Domain", "src\JF.Utils.Domain\JF.Utils.Domain.csproj", "{230860F2-C704-43BC-BD62-4DD98A296049}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JF.Utils.Application", "src\JF.Utils.Application\JF.Utils.Application.csproj", "{7C70E459-603B-4D52-AA0F-B0947172934F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Application", "src\JF.Utils.Application\JF.Utils.Application.csproj", "{7C70E459-603B-4D52-AA0F-B0947172934F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JF.Utils.Infrastructure", "src\JF.Utils.Infrastructure\JF.Utils.Infrastructure.csproj", "{24498843-3550-448E-B88E-9D699A189C36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JF.Utils.Infrastructure", "src\JF.Utils.Infrastructure\JF.Utils.Infrastructure.csproj", "{24498843-3550-448E-B88E-9D699A189C36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repoItems", "repoItems", "{C4DA6D5B-B888-46A9-B204-638F16807776}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
