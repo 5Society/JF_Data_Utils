@@ -8,11 +8,11 @@ namespace TestProject.Services
         [SetUp]
         public void Setup()
         {
-            SalonRepository repository = new SalonRepository(InitialSetup.GetAppContextSalon);
+            SalonRepository repository = new(InitialSetup.GetAppContextSalon);
             _service = new SalonService(repository);
         }
 
-        [TestCase("name", 1, 1,  true)]
+        [TestCase("name", 1, 1, true)]
         [TestCase("Asignature 1", 2, 1, true)]
         [TestCase("Asignature 1", 2, 50, false)]
         [TestCase("name", 1, null, true)]
@@ -21,9 +21,9 @@ namespace TestProject.Services
         [TestCase(null, 1, 1, false)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddSalon(string name, int idCourse, int? idTeacher, bool resultExpexted)
+        public void AddSalon(string? name, int idCourse, int? idTeacher, bool resultExpexted)
         {
-            Salon salon = new Salon() { Name = name, CourseId= idCourse, TeacherId = idTeacher};
+            Salon salon = new() { Name = name, CourseId = idCourse, TeacherId = idTeacher };
             //salon.CourseId = idCourse;
             bool result = _service.AddSalon(salon).Result;
 
@@ -68,14 +68,14 @@ namespace TestProject.Services
         [TestCase(1, 1, "name1 ", 2, 2, true)]
         [TestCase(1, 1, "name1 ", 2, 20, false)]
         [TestCase(2, 2, "name 1", 1, 1, true)]
-        [TestCase(1, 10, "test1 ", 1,1, false)]
-        [TestCase(2, 20, "test 1", 1,1, false)]
+        [TestCase(1, 10, "test1 ", 1, 1, false)]
+        [TestCase(2, 20, "test 1", 1, 1, false)]
         [TestCase(10, 10, "Name1 ", 1, 1, false)]
         [TestCase(20, 20, "test 1", 1, 1, false)]
         [Test, Order(2)]
         public void UpdateSalon(int id, int SalonId, string name, int idCourse, int idTeacher, bool resultExpexted)
         {
-            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
+            Salon salon = new() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
             bool result = _service.UpdateSalon(id, salon).Result;
             Assert.Multiple(() =>
             {
@@ -95,9 +95,9 @@ namespace TestProject.Services
         [TestCase(1, 1, "Salon 1", 10, 1)]
         [TestCase(1, 1, "salon 1", 0, 1)]
         [Test, Order(2)]
-        public void UpdateSalonException(int id, int SalonId, string name, int idCourse, int idTeacher)
+        public void UpdateSalonException(int id, int SalonId, string? name, int idCourse, int idTeacher)
         {
-            Salon salon = new Salon() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
+            Salon salon = new() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
             Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
@@ -126,5 +126,5 @@ namespace TestProject.Services
         }
 
     }
-  
+
 }

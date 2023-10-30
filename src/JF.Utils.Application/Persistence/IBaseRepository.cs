@@ -1,13 +1,15 @@
 ﻿
 
+using JF.Utils.Domain.Entities;
+
 namespace JF.Utils.Application.Persistence
 {
     /// <summary>
     /// Interfaz que define operaciones básicas de repositorio para entidades de tipo <typeparamref name="TEntity"/>.
-    /// Hereda de la interfaz <see cref="IReadRepositoryBase{TEntity}"/>.
+    /// Hereda de la interfaz <see cref="IBaseReadRepository{TEntity}"/>.
     /// </summary>
     /// <typeparam name="TEntity">El tipo de entidad con el que trabaja el repositorio.</typeparam>
-    public interface IRepositoryBase<TEntity> : IReadRepositoryBase<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> : IBaseReadRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
         /// Agrega una entidad de tipo <typeparamref name="TEntity"/> de manera asincrónica.

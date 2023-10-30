@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using JF.Utils.Domain.Entities;
+using System.Linq.Expressions;
 
 
 namespace JF.Utils.Application.Persistence
@@ -7,7 +8,7 @@ namespace JF.Utils.Application.Persistence
     /// Interfaz que define operaciones de lectura básicas para entidades de tipo <typeparamref name="TEntity"/>.
     /// </summary>
     /// <typeparam name="TEntity">El tipo de entidad con el que trabaja el repositorio.</typeparam>
-    public interface IReadRepositoryBase<TEntity> where TEntity : class
+    public interface IBaseReadRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
         /// Obtiene una consulta que representa todas las entidades del tipo <typeparamref name="TEntity"/>.
