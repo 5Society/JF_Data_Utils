@@ -46,7 +46,7 @@ namespace TestProject.Services
         [Test, Order(1)]
         public void AddTeacherException(string lastName, string? name)
         {
-            Teacher teacher = new() { LastName = lastName, Name = name };
+            Teacher teacher = new() { LastName = lastName, Name = name! };
             Assert.That(() => _service.AddTeacher(teacher), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
@@ -109,7 +109,7 @@ namespace TestProject.Services
         [Test, Order(2)]
         public void UpdateTeacherException(int id, int TeacherId, string? lastName, string? name)
         {
-            Teacher teacher = new() { Id = TeacherId, LastName = lastName, Name = name };
+            Teacher teacher = new() { Id = TeacherId, LastName = lastName!, Name = name! };
             Assert.That(() => _service.UpdateTeacher(id, teacher), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 

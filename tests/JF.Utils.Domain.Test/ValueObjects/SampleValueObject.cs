@@ -13,7 +13,7 @@ namespace JF.Utils.Domain.Test.ValueObjects
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value;
+            yield return Value!;
         }
 
         internal bool NotEquals(SampleValueObject obj2)

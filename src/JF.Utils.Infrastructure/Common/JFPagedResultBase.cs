@@ -3,7 +3,7 @@ using JF.Utils.Application.Common;
 
 namespace JF.Utils.Infrastructure.Common
 {
-    public class JFPagedResult<TEntity> : IPagedResult<TEntity> 
+    public class JFPagedResult<TEntity> : IPagedResult<TEntity>
         where TEntity : class
     {
         public IQueryable<TEntity> Query { get; internal set; }

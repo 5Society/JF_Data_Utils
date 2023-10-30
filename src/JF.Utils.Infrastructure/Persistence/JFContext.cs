@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JF.Utils.Application.Persistence;
+using JF.Utils.Domain.Entities;
+using JF.Utils.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
-using JF.Utils.Domain.Entities;
-using JF.Utils.Infrastructure.Extensions;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
@@ -11,9 +12,9 @@ namespace JF.Utils.Infrastructure.Persistence
     {
         private readonly string? _username;
 
-        private readonly Dictionary<string, dynamic> _repositoriesBase = new Dictionary<string, dynamic>();
+        private readonly Dictionary<string, dynamic> _repositoriesBase = new();
 
-        private readonly Dictionary<string, dynamic> _repositoriesRead = new Dictionary<string, dynamic>();
+        private readonly Dictionary<string, dynamic> _repositoriesRead = new();
 
         private IDbContextTransaction? _currentTransaction;
         public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
@@ -122,7 +123,7 @@ namespace JF.Utils.Infrastructure.Persistence
             if (_currentTransaction == null) return result;
             try
             {
-                result= await SaveChangesAsync(cancellationToken);
+                result = await SaveChangesAsync(cancellationToken);
                 _currentTransaction.Commit();
                 _currentTransaction.Dispose();
                 _currentTransaction = null!;
@@ -150,7 +151,7 @@ namespace JF.Utils.Infrastructure.Persistence
             }
         }
 
-        public IRepository<TEntity>? Repository<TEntity>() 
+        public IRepository<TEntity>? Repository<TEntity>()
             where TEntity : class, IAggregateRoot
         {
             var type = typeof(TEntity).Name;
@@ -160,7 +161,7 @@ namespace JF.Utils.Infrastructure.Persistence
             return _repositoriesBase[type];
         }
 
-        public IReadRepository<TEntity>? ReadRepository<TEntity>() 
+        public IReadRepository<TEntity>? ReadRepository<TEntity>()
             where TEntity : class, IAggregateRoot
         {
             var type = typeof(TEntity).Name;

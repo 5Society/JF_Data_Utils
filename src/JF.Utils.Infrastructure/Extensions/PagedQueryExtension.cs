@@ -10,13 +10,15 @@ namespace JF.Utils.Infrastructure.Extensions
     /// </summary>
     public static class PagedQueryExtension
     {
-        public static IPagedResult<T> GetPaged<T>(this IQueryable<T> query, int page, int pageSize) 
+        public static IPagedResult<T> GetPaged<T>(this IQueryable<T> query, int page, int pageSize)
             where T : class
         {
-            var result = new JFPagedResult<T>(query);
-            result.CurrentPage = page;
-            result.PageSize = pageSize;
-            result.RowCount = query.Count();
+            var result = new JFPagedResult<T>(query)
+            {
+                CurrentPage = page,
+                PageSize = pageSize,
+                RowCount = query.Count()
+            };
             result.PageCount = (int)Math.Ceiling((double)result.RowCount / pageSize);
             return result;
         }
