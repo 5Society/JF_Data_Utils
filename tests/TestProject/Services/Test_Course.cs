@@ -39,7 +39,7 @@ namespace TestProject.Services
         [Test, Order(1)]
         public void AddCourseException(string name, string? summary)
         {
-            Course course = new() { Name = name, Summary = summary };
+            Course course = new() { Name = name, Summary = summary!  };
             Assert.That(() => _service.AddCourse(course), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
@@ -95,7 +95,7 @@ namespace TestProject.Services
         [Test, Order(2)]
         public void UpdateCourseException(int id, int courseId, string? name, string? summary)
         {
-            Course course = new() { Id = courseId, Name = name, Summary = summary };
+            Course course = new() { Id = courseId, Name = name!, Summary = summary! };
             Assert.That(() => _service.UpdateCourse(id, course), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 

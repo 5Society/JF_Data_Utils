@@ -23,7 +23,7 @@ namespace TestProject.Services
         [Test, Order(1)]
         public void AddSalon(string? name, int idCourse, int? idTeacher, bool resultExpexted)
         {
-            Salon salon = new() { Name = name, CourseId = idCourse, TeacherId = idTeacher };
+            Salon salon = new() { Name = name!, CourseId = idCourse, TeacherId = idTeacher };
             //salon.CourseId = idCourse;
             bool result = _service.AddSalon(salon).Result;
 
@@ -97,7 +97,7 @@ namespace TestProject.Services
         [Test, Order(2)]
         public void UpdateSalonException(int id, int SalonId, string? name, int idCourse, int idTeacher)
         {
-            Salon salon = new() { Id = SalonId, Name = name, CourseId = idCourse, TeacherId = idTeacher };
+            Salon salon = new() { Id = SalonId, Name = name!, CourseId = idCourse, TeacherId = idTeacher };
             Assert.That(() => _service.UpdateSalon(id, salon), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
