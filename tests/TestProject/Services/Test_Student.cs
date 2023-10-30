@@ -17,7 +17,7 @@ namespace TestProject.Services
         [Test, Order(1)]
         public void AddStudentOk(string lastName, string name, bool resultExpexted)
         {
-            Student student = new Student() { LastName = lastName, Name = name };
+            Student student = new() { LastName = lastName, Name = name };
             var result = _service.AddStudent(student).Result;
 
             Assert.Multiple(() =>
@@ -44,9 +44,9 @@ namespace TestProject.Services
         [TestCase("Pepito", null)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddStudentException(string lastName, string name)
+        public void AddStudentException(string lastName, string? name)
         {
-            Student student = new Student() { LastName = lastName, Name = name };
+            Student student = new() { LastName = lastName, Name = name };
             Assert.That(() => _service.AddStudent(student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
@@ -81,7 +81,7 @@ namespace TestProject.Services
         [Test, Order(2)]
         public void UpdateStudentOK(int id, int studentId, string lastName, string name, bool resultExpexted)
         {
-            Student student = new Student() { Id = studentId, LastName = lastName, Name = name };
+            Student student = new() { Id = studentId, LastName = lastName, Name = name };
             var result = _service.UpdateStudent(id, student).Result;
             Assert.Multiple(() =>
             {
@@ -107,9 +107,9 @@ namespace TestProject.Services
         [TestCase(1, 1, "lastName1 ", null)]
         [TestCase(2, 2, null, "Pepito 2")]
         [Test, Order(2)]
-        public void UpdateStudentException(int id, int studentId, string lastName, string name)
+        public void UpdateStudentException(int id, int studentId, string? lastName, string? name)
         {
-            Student student = new Student() { Id = studentId, LastName = lastName, Name = name };
+            Student student = new() { Id = studentId, LastName = lastName, Name = name };
             Assert.That(() => _service.UpdateStudent(id, student), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 

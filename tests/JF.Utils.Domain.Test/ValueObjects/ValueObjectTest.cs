@@ -1,6 +1,4 @@
-﻿using JF.Utils.Domain.ValueObjects;
-
-namespace JF.Utils.Domain.Test.ValueObjects
+﻿namespace JF.Utils.Domain.Test.ValueObjects
 {
     public class ValueObjectTest
     {
@@ -62,7 +60,7 @@ namespace JF.Utils.Domain.Test.ValueObjects
             // Assert
             Assert.False(result);
         }
-        
+
         [Fact]
         public void Equals_ReturnsFalse_WhenObject2IsNull()
         {

@@ -17,7 +17,7 @@ namespace TestProject.Services
         [Test, Order(1)]
         public void AddTeacherOk(string lastName, string name, bool resultExpexted)
         {
-            Teacher teacher = new Teacher() { LastName = lastName, Name = name };
+            Teacher teacher = new() { LastName = lastName, Name = name };
             var result = _service.AddTeacher(teacher).Result;
 
             Assert.Multiple(() =>
@@ -44,9 +44,9 @@ namespace TestProject.Services
         [TestCase("Pepito", null)]
         [NonParallelizable]
         [Test, Order(1)]
-        public void AddTeacherException(string lastName, string name)
+        public void AddTeacherException(string lastName, string? name)
         {
-            Teacher teacher = new Teacher() { LastName = lastName, Name = name };
+            Teacher teacher = new() { LastName = lastName, Name = name };
             Assert.That(() => _service.AddTeacher(teacher), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
@@ -81,7 +81,7 @@ namespace TestProject.Services
         [Test, Order(2)]
         public void UpdateTeacherOK(int id, int TeacherId, string lastName, string name, bool resultExpexted)
         {
-            Teacher teacher = new Teacher() { Id = TeacherId, LastName = lastName, Name = name };
+            Teacher teacher = new() { Id = TeacherId, LastName = lastName, Name = name };
             var result = _service.UpdateTeacher(id, teacher).Result;
             Assert.Multiple(() =>
             {
@@ -107,9 +107,9 @@ namespace TestProject.Services
         [TestCase(1, 1, "lastName1 ", null)]
         [TestCase(2, 2, null, "Pepito 2")]
         [Test, Order(2)]
-        public void UpdateTeacherException(int id, int TeacherId, string lastName, string name)
+        public void UpdateTeacherException(int id, int TeacherId, string? lastName, string? name)
         {
-            Teacher teacher = new Teacher() { Id = TeacherId, LastName = lastName, Name = name };
+            Teacher teacher = new() { Id = TeacherId, LastName = lastName, Name = name };
             Assert.That(() => _service.UpdateTeacher(id, teacher), Throws.TypeOf<System.ComponentModel.DataAnnotations.ValidationException>());
         }
 
