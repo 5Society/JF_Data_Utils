@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using JF.Utils.Infrastructure.Extensions;
+using JF.Utils.Domain.Entities;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
     public class JFReadRepository<TEntity> : IReadRepository<TEntity> 
-        where TEntity : class
+        where TEntity : class, IEntity
     {
         protected readonly DbSet<TEntity> _entities;
         protected readonly JFContext _context;
