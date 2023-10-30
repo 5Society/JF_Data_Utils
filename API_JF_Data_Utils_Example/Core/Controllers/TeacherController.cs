@@ -38,13 +38,13 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Teacher> Post([FromBody] Teacher entity)
+        public async Task<ActionResult<Teacher>> Post([FromBody] Teacher entity)
         {
 
             if (entity is null)
                 return BadRequest(ModelState);
 
-            bool result = _teacherService.AddTeacher(entity);
+            bool result = await _teacherService.AddTeacher(entity);
 
             if (!result)
                 return BadRequest("Your changes have not been saved.");
@@ -53,7 +53,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Teacher entity)
+        public async Task<IActionResult> Put(int id, [FromBody] Teacher entity)
         {
             if (entity is null)
                 return BadRequest(ModelState);
@@ -61,7 +61,7 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
             if (id != entity.Id)
                 return BadRequest("Identifier is not valid or Identifiers don't match.");
 
-            bool result = _teacherService.UpdateTeacher(id, entity);
+            bool result = await _teacherService.UpdateTeacher(id, entity);
 
             if (!result)
                 return BadRequest("Your changes have not been saved.");
@@ -70,9 +70,9 @@ namespace API_JF_Data_Utils_Example.Core.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            bool result = _teacherService.DeleteTeacher(id);
+            bool result = await _teacherService.DeleteTeacher(id);
 
             if (!result) return NotFound($"Entity with Id = {id} not found");
 

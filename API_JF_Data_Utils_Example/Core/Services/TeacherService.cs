@@ -1,26 +1,25 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using API_JF_Data_Utils_Example.DataAccess.Interfaces;
-using JF.Utils.Data.Extensions;
-using JF.Utils.Data.Interfaces;
+using JF.Utils.Application.Persistence;
+
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class TeacherService : ITeacherService
     {
-        private readonly IRepositoryBase<Teacher> _teacherRepository;
+        private readonly IRepository<Teacher> _teacherRepository;
 
         public TeacherService(IUnitOfWork context)
         { 
             _teacherRepository = context.Repository<Teacher>()!;
         }
-        public bool AddTeacher(Teacher teacher)
+        public async Task<bool> AddTeacher(Teacher teacher)
         {
-            _teacherRepository.Add(teacher);
-            return (_teacherRepository.UnitOfWork.SaveChanges()) > 0;
+            await _teacherRepository.AddAsync(teacher);
+            return (await _teacherRepository.UnitOfWork.SaveChangesAsync()) > 0;
         }
 
-        public bool DeleteTeacher(int id)
+        public async Task<bool> DeleteTeacher(int id)
         {
             Teacher? entity = _teacherRepository.GetById(id);
 
@@ -28,12 +27,12 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
             _teacherRepository.Delete(entity);
 
-            return _teacherRepository.UnitOfWork.SaveChanges()>0;
+            return (await _teacherRepository.UnitOfWork.SaveChangesAsync())>0;
         }
 
         public IEnumerable<Teacher> GetAllTeachers(int page, int pagesize)
         {
-            return _teacherRepository.GetAll().GetPaged(page, pagesize).GetResults();
+            return _teacherRepository.GetAllPaged(page, pagesize);
         }
 
         public Teacher? GetTeacherById(int id)
@@ -41,11 +40,11 @@ namespace API_JF_Data_Utils_Example.Core.Services
             return _teacherRepository.GetById(id);
         }
 
-        public bool UpdateTeacher(int id, Teacher teacher)
+        public async Task<bool> UpdateTeacher(int id, Teacher teacher)
         {
             if (id != teacher.Id) return false;
-            _teacherRepository.Update(teacher);
-            return _teacherRepository.UnitOfWork.SaveChanges() >0;
+            _teacherRepository.Update(id, teacher);
+            return (await _teacherRepository.UnitOfWork.SaveChangesAsync()) >0;
 
         }
     }

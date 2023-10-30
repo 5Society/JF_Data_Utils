@@ -1,14 +1,12 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using API_JF_Data_Utils_Example.DataAccess.Interfaces;
-using JF.Utils.Data.Extensions;
-using JF.Utils.Data.Interfaces;
+using JF.Utils.Application.Persistence;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly IRepositoryBase<Student> _studentRepository;
+        private readonly IRepository<Student> _studentRepository;
 
         public StudentService(IUnitOfWork context)
         { 
@@ -16,7 +14,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
         }
         public async Task<bool> AddStudent(Student student)
         {
-            _studentRepository.Add(student);
+            await _studentRepository.AddAsync(student);
             return (await _studentRepository.UnitOfWork.SaveChangesAsync()) > 0;
         }
 
@@ -33,7 +31,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
 
         public IEnumerable<Student> GetAllStudents(int page, int pagesize)
         {
-            return _studentRepository.GetAll().GetPaged(page, pagesize).GetResults();
+            return _studentRepository.GetAllPaged(page, pagesize);
         }
 
         public async Task<Student?> GetStudentById(int id)
@@ -44,7 +42,7 @@ namespace API_JF_Data_Utils_Example.Core.Services
         public async Task<bool> UpdateStudent(int id, Student student)
         {
             if (id != student.Id) return false;
-            _studentRepository.Update(student);
+            _studentRepository.Update(id, student);
             return await _studentRepository.UnitOfWork.SaveChangesAsync() >0;
 
         }

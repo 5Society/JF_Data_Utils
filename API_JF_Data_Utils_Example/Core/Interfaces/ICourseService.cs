@@ -1,6 +1,4 @@
 ﻿using API_JF_Data_Utils_Example.Core.Models;
-using API_JF_Data_Utils_Example.DataAccess.Interfaces;
-using JF.Utils.Data.Interfaces;
 
 namespace API_JF_Data_Utils_Example.Core.Interfaces
 {
@@ -8,8 +6,8 @@ namespace API_JF_Data_Utils_Example.Core.Interfaces
     {
         IEnumerable<Course> GetAllCourses(int page, int pagesize);
         Course? GetCourseById(int id);
-        bool AddCourse(Course course);
-        bool UpdateCourse(int id, Course course);
-        bool DeleteCourse(int id);
+        Task<bool> AddCourse(Course course);
+        Task<bool> UpdateCourse(int id, Course course);
+        Task<bool> DeleteCourse(int id);
     }
 }
