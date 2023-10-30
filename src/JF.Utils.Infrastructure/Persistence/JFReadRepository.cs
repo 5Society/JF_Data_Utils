@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using JF.Utils.Infrastructure.Extensions;
+﻿using JF.Utils.Application.Persistence;
 using JF.Utils.Domain.Entities;
-using JF.Utils.Application.Persistence;
+using JF.Utils.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
-    public class JFReadRepository<TEntity> : IReadRepository<TEntity> 
+    public class JFReadRepository<TEntity> : IReadRepository<TEntity>
         where TEntity : class, IEntity
     {
         protected readonly DbSet<TEntity> _entities;
@@ -68,12 +68,12 @@ namespace JF.Utils.Infrastructure.Persistence
             return queryable;
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default) 
+        public virtual async Task<TEntity?> GetByIdAsync(object id, CancellationToken cancellationToken = default)
         {
             return await _entities.FindAsync(new object[] { id }, cancellationToken: cancellationToken);
         }
 
-        public virtual TEntity? GetById(object id) 
+        public virtual TEntity? GetById(object id)
         {
             return _entities.Find(new object[] { id });
         }

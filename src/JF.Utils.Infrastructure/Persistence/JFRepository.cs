@@ -1,11 +1,10 @@
 ﻿
 using JF.Utils.Application.Persistence;
 using JF.Utils.Domain.Entities;
-using System.Reflection;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
-    public class JFRepository<TEntity> : JFReadRepository<TEntity>, IRepository<TEntity> 
+    public class JFRepository<TEntity> : JFReadRepository<TEntity>, IRepository<TEntity>
         where TEntity : class, IAggregateRoot
     {
         public JFRepository(IUnitOfWork context) : base(context)
@@ -32,7 +31,7 @@ namespace JF.Utils.Infrastructure.Persistence
 
         public virtual async Task<int> AddRangeAndSaveAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
         {
-           
+
             await AddRangeAsync(entities);
             return await _context.SaveChangesAsync(cancellationToken);
         }
@@ -81,10 +80,10 @@ namespace JF.Utils.Infrastructure.Persistence
             if (!Update(id, entity)) return 0;
             return await _context.SaveChangesAsync(cancellationToken);
         }
-      
+
         public virtual bool ValidateModel(TEntity entity) => true;
 
-    
+
 
     }
 }
