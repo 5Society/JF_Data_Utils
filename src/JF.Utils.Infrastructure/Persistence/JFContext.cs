@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
 using JF.Utils.Domain.Entities;
 using JF.Utils.Infrastructure.Extensions;
+using JF.Utils.Application.Persistence;
 
 namespace JF.Utils.Infrastructure.Persistence
 {

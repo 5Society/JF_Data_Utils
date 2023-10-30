@@ -1,6 +1,6 @@
 ﻿using API_JF_Data_Utils_Example.Core.Interfaces;
 using API_JF_Data_Utils_Example.Core.Models;
-using JF.Utils.Infrastructure.Persistence;
+using JF.Utils.Application.Persistence;
 
 namespace API_JF_Data_Utils_Example.Core.Services
 {

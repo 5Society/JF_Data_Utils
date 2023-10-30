@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using JF.Utils.Infrastructure.Extensions;
 using JF.Utils.Domain.Entities;
+using JF.Utils.Application.Persistence;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
