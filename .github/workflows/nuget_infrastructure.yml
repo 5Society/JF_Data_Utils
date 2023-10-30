@@ -1,4 +1,4 @@
-name: "Deploy to NuGet"
+name: "Deploy to NuGet Infrastructure"
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  PROJECT_PATH: 'JF.Utils.Infrastructure/JF.Utils.Infrastructure.csproj'
+  PROJECT_PATH: 'src/JF.Utils.Infrastructure/JF.Utils.Infrastructure.csproj'
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
   NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
