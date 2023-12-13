@@ -1,19 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Query;
-using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Reflection;
 
 
 namespace JF.Utils.Infrastructure.Extensions
 {
+    /// <summary>
+    /// Clase estática que proporciona extensiones para facilitar la configuración de filtros de consulta en todas las entidades del modelo de Entity Framework Core.
+    /// </summary>
     public static class ModelBuilderExtension
     {
+        // Método privado utilizado para obtener información sobre el método SetQueryFilter de forma dinámica.
         private static readonly MethodInfo SetQueryFilterMethod = typeof(ModelBuilderExtension)
             .GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
             .Single(t => t.IsGenericMethod && t.Name == nameof(SetQueryFilter));
 
+        /// <summary>
+        /// Aplica un filtro de consulta en todas las entidades del modelo que implementan la interfaz especificada.
+        /// </summary>
+        /// <typeparam name="TEntityInterface">Tipo de interfaz que deben implementar las entidades.</typeparam>
+        /// <param name="builder">Instancia de ModelBuilder.</param>
+        /// <param name="filterExpression">Expresión lambda que representa el filtro de consulta.</param>
         public static void SetQueryFilterOnAllEntities<TEntityInterface>(
             this ModelBuilder builder,
             Expression<Func<TEntityInterface, bool>> filterExpression)
@@ -27,6 +36,7 @@ namespace JF.Utils.Infrastructure.Extensions
                     filterExpression);
         }
 
+        // Método privado utilizado para invocar dinámicamente el método SetQueryFilter con tipos genéricos.
         private static void SetEntityQueryFilter<TEntityInterface>(
             this ModelBuilder builder,
             Type entityType,
@@ -37,6 +47,7 @@ namespace JF.Utils.Infrastructure.Extensions
                 .Invoke(null, new object[] { builder, filterExpression });
         }
 
+        // Método privado utilizado para aplicar el filtro de consulta en una entidad específica.
         private static void SetQueryFilter<TEntity, TEntityInterface>(
             this ModelBuilder builder,
             Expression<Func<TEntityInterface, bool>> filterExpression)
@@ -49,7 +60,8 @@ namespace JF.Utils.Infrastructure.Extensions
                 .AppendQueryFilter(concreteExpression);
         }
 
-        // CREDIT: This comment by magiak on GitHub https://github.com/dotnet/efcore/issues/10275#issuecomment-785916356
+        // Método privado utilizado para aplicar el filtro de consulta en una entidad específica.
+        // Créditos: Comentario de magiak en GitHub https://github.com/dotnet/efcore/issues/10275#issuecomment-785916356
         private static void AppendQueryFilter<T>(this EntityTypeBuilder entityTypeBuilder,
             Expression<Func<T, bool>> expression)
             where T : class
@@ -69,36 +81,6 @@ namespace JF.Utils.Infrastructure.Extensions
 
             var lambdaExpression = Expression.Lambda(expressionFilter, parameterType);
             entityTypeBuilder.HasQueryFilter(lambdaExpression);
-        }
-    }
-
-    public static class ExpressionExtensions
-    {
-        // This magic is courtesy of this StackOverflow post.
-        // https://stackoverflow.com/questions/38316519/replace-parameter-type-in-lambda-expression
-        // I made some tweaks to adapt it to our needs - @haacked
-        public static Expression<Func<TTarget, bool>> Convert<TSource, TTarget>(
-            this Expression<Func<TSource, bool>> root)
-        {
-            var visitor = new ParameterTypeVisitor<TSource, TTarget>();
-            return (Expression<Func<TTarget, bool>>)visitor.Visit(root);
-        }
-
-        private sealed class ParameterTypeVisitor<TSource, TTarget> : ExpressionVisitor
-        {
-            private ReadOnlyCollection<ParameterExpression>? _parameters;
-
-            protected override Expression VisitParameter(ParameterExpression node)
-            {
-                return _parameters?.FirstOrDefault(p => p.Name == node.Name)
-                       ?? (node.Type == typeof(TSource) ? Expression.Parameter(typeof(TTarget), node.Name) : node);
-            }
-
-            protected override Expression VisitLambda<T>(Expression<T> node)
-            {
-                _parameters = VisitAndConvert(node.Parameters, "VisitLambda");
-                return Expression.Lambda(Visit(node.Body), _parameters);
-            }
         }
     }
 }

@@ -8,6 +8,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JF.Utils.Infrastructure.Persistence
 {
+    /// <summary>
+    /// Implementación de DbContext que proporciona funcionalidades adicionales para el trabajo con Entity Framework Core.
+    /// También implementa la interfaz IUnitOfWork para gestionar transacciones y repositorios.
+    /// </summary>
     public class JFContext : DbContext, IUnitOfWork
     {
         private readonly string? _username;
@@ -17,28 +21,65 @@ namespace JF.Utils.Infrastructure.Persistence
         private readonly Dictionary<string, dynamic> _repositoriesRead = new();
 
         private IDbContextTransaction? _currentTransaction;
+
+        /// <summary>
+        /// Obtiene la transacción de contexto actual, si existe.
+        /// </summary>
+        /// <returns>La transacción de contexto actual o null si no hay ninguna.</returns>
         public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
+
+        /// <summary>
+        /// Indica si hay una transacción activa en el contexto.
+        /// </summary>
         public bool HasActiveTransaction => _currentTransaction != null;
+
+        /// <summary>
+        /// Constructor que acepta opciones de contexto y el nombre de usuario asociado al contexto.
+        /// </summary>
+        /// <param name="options">Opciones de contexto de Entity Framework Core.</param>
+        /// <param name="username">Nombre de usuario asociado al contexto.</param>
         public JFContext(DbContextOptions<JFContext> options, string username) : base(options)
         {
             _username = username;
         }
 
+        /// <summary>
+        /// Constructor que acepta solo opciones de contexto y establece un nombre de usuario genérico.
+        /// </summary>
+        /// <param name="options">Opciones de contexto de Entity Framework Core.</param>
         public JFContext(DbContextOptions<JFContext> options) : base(options)
         {
             _username = "Generic";
         }
 
+        /// <summary>
+        /// Método llamado para configurar el modelo de datos, incluyendo filtros de consulta por defecto.
+        /// </summary>
+        /// <param name="modelBuilder">Constructor de modelos de Entity Framework Core.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Aplica un filtro de consulta por defecto para entidades que implementan ISoftDeleteEntity.
             modelBuilder.SetQueryFilterOnAllEntities<ISoftDeleteEntity>(e => e.DeletedDate == null);
             base.OnModelCreating(modelBuilder);
         }
 
+        /// <summary>
+        /// Guarda todos los cambios realizados en el contexto en la base de datos de forma asincrónica.
+        /// Además, realiza validaciones y actualizaciones adicionales antes de guardar los cambios.
+        /// </summary>
+        /// <param name="cancellationToken">Token de cancelación.</param>
+        /// <returns>Número de entidades afectadas.</returns>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-            => await SaveChangesAsync(acceptAllChangesOnSuccess: true, cancellationToken);
+       => await SaveChangesAsync(acceptAllChangesOnSuccess: true, cancellationToken);
 
 
+        /// <summary>
+        /// Guarda todos los cambios realizados en el contexto en la base de datos de forma asincrónica.
+        /// Además, realiza validaciones y actualizaciones adicionales antes de guardar los cambios.
+        /// </summary>
+        /// <param name="acceptAllChangesOnSuccess">Indica si se deben aceptar todos los cambios en caso de éxito.</param>
+        /// <param name="cancellationToken">Token de cancelación.</param>
+        /// <returns>Número de entidades afectadas.</returns>
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             ValidateUpdateEntities();
@@ -110,6 +151,10 @@ namespace JF.Utils.Infrastructure.Persistence
                 Validator.ValidateObject(entity, validationContext);
             }
         }
+        /// <summary>
+        /// Inicia una transacción de base de datos de forma asincrónica.
+        /// </summary>
+        /// <returns>La transacción de base de datos iniciada.</returns>
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
             if (_currentTransaction != null) return null!;
@@ -117,6 +162,11 @@ namespace JF.Utils.Infrastructure.Persistence
             return _currentTransaction;
         }
 
+        /// <summary>
+        /// Confirma la transacción de base de datos actual de forma asincrónica.
+        /// </summary>
+        /// <param name="cancellationToken">Token de cancelación.</param>
+        /// <returns>Número de entidades afectadas.</returns>
         public async Task<int> CommitTransactionAsync(CancellationToken cancellationToken = default)
         {
             int result = 0;
@@ -135,6 +185,9 @@ namespace JF.Utils.Infrastructure.Persistence
             return result;
         }
 
+        /// <summary>
+        /// Revierte la transacción de base de datos actual.
+        /// </summary>
         public void RollbackTransaction()
         {
             try
@@ -151,6 +204,11 @@ namespace JF.Utils.Infrastructure.Persistence
             }
         }
 
+        /// <summary>
+        /// Obtiene un repositorio base para la entidad especificada.
+        /// </summary>
+        /// <typeparam name="TEntity">Tipo de entidad.</typeparam>
+        /// <returns>Repositorio para la entidad especificada.</returns>
         public IRepository<TEntity>? Repository<TEntity>()
             where TEntity : class, IAggregateRoot
         {
@@ -161,6 +219,11 @@ namespace JF.Utils.Infrastructure.Persistence
             return _repositoriesBase[type];
         }
 
+        /// <summary>
+        /// Obtiene un repositorio de solo lectura para la entidad especificada.
+        /// </summary>
+        /// <typeparam name="TEntity">Tipo de entidad.</typeparam>
+        /// <returns>Repositorio de solo lectura para la entidad especificada.</returns>
         public IReadRepository<TEntity>? ReadRepository<TEntity>()
             where TEntity : class, IAggregateRoot
         {
@@ -171,6 +234,11 @@ namespace JF.Utils.Infrastructure.Persistence
             return _repositoriesRead[type];
         }
 
+        /// <summary>
+        /// Agrega un repositorio personalizado para la entidad especificada.
+        /// </summary>
+        /// <typeparam name="TEntity">Tipo de entidad.</typeparam>
+        /// <param name="repository">Instancia del repositorio personalizado.</param>
         public void AddRepository<TEntity>(object repository)
         {
             var type = typeof(TEntity).Name;
